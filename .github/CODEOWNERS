@@ -1,0 +1,31 @@
+# CODEOWNERS - Code Review Requirements
+#
+# These patterns specify who must review changes to different parts of the codebase.
+# GitHub enforces these rules on pull requests.
+#
+# For more info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# ── All files ───────────────────────────────────────────────────────────────
+# Any change requires review from the maintainer
+* @munitras
+
+# ── Security-critical files ────────────────────────────────────────────────
+# Agent definitions can execute arbitrary commands - require thorough review
+.opencode/agents/ @munitras
+AGENTS.md @munitras
+
+# Installation scripts copy files into user's vault - security critical
+scripts/*.sh @munitras
+
+# References define agent behavior and coordination
+.opencode/references/ @munitras
+references/ @munitras
+
+# Configuration and documentation
+SECURITY.md @munitras
+README.md @munitras
+CONTRIBUTING.md @munitras
+TERMS_OF_USE.md @munitras
+
+# GitHub workflows (if added in future)
+.github/ @munitras

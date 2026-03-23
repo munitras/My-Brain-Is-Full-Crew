@@ -1,32 +1,17 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Agents-8-blueviolet?style=for-the-badge" alt="8 Agents" />
+  <img src="https://img.shields.io/badge/Agents-7-blueviolet?style=for-the-badge" alt="7 Agents" />
   <img src="https://img.shields.io/badge/Language-Any-success?style=for-the-badge" alt="Any Language" />
-  <img src="https://img.shields.io/badge/Platform-Obsidian%20%2B%20Claude-blue?style=for-the-badge" alt="Obsidian + Claude" />
+  <img src="https://img.shields.io/badge/Platform-Obsidian%20%2B%20OpenCode-blue?style=for-the-badge" alt="Obsidian + OpenCode" />
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="MIT License" />
-  <a href="https://discord.gg/EUnQmABw8s"><img src="https://img.shields.io/badge/Discord-Join%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" /></a>
 </p>
 
-# My Brain Is Full - Crew
+# My Brain Is Full - Crew (OpenCode Edition)
 
-### A team of 8 AI agents that manage your Obsidian vault so your brain doesn't have to.
+### A team of 7 AI agents that manage your Obsidian vault so your brain doesn't have to.
 
-You talk. They organize, file, connect, search, transcribe, and triage your email. In any language.
+You talk. They organize, file, connect, search, and triage. In any language.
 
----
-
-## The honest origin story
-
-I'm a PhD researcher. I've spent years training my brain to hold enormous amounts of information: papers, ideas, deadlines, people, half-baked theories at 2am. And for a while, it worked.
-
-Then it didn't.
-
-Memory started slipping. Not dramatically (no diagnosis, no crisis), just the slow, creeping realization that the mental budget was getting empty, and things were falling through the cracks. I'd forget what I'd read. Lose track of conversations. Feel constantly behind, constantly overwhelmed.
-
-I started looking for solutions. I found a lot of Obsidian + Claude setups online. They were mostly clever note-capture tools, glorified search engines for your second brain. Useful. But not what I needed.
-
-What I needed wasn't just a memory extension. I needed a **brain dump system**, something that could help me organize not just my knowledge, but my life: my overwhelmed mind, my wrecked physical health, the avalanche of emails and commitments and things I should have done last week.
-
-So I built this.
+> **This is the OpenCode Edition** — adapted from [My-Brain-Is-Full-Crew](https://github.com/gnekt/My-Brain-Is-Full-Crew) for the OpenCode CLI. The original project targets Claude Code. This fork is OpenCode-native.
 
 ---
 
@@ -35,7 +20,7 @@ So I built this.
 Most "AI + Obsidian" tools are built for **people who already have their life together** and want to optimize. This one is for people who are **drowning** and need a lifeline.
 
 **1. The chat IS the interface.**
-I don't browse Obsidian. I don't drag files around. I don't maintain complex folder structures manually. I just talk to Claude. Everything else happens automatically.
+You don't browse Obsidian. You don't drag files around. You don't maintain complex folder structures manually. You just talk. Everything else happens automatically.
 
 **2. It speaks your language, literally.**
 The system works in any language. You shouldn't need to think in English to manage your brain. Just talk in Italian, French, German, Spanish, Japanese, whatever feels natural. The agents match you.
@@ -45,161 +30,39 @@ When the transcription agent processes a meeting and discovers a new project, th
 
 ---
 
-## Who this is for
+## The Crew (7 Agents)
 
-- PhD students, researchers, academics drowning in papers and commitments
-- Anyone with **brain fog**, or just an overloaded working memory
-- Non-native English speakers who want a system that works in their language
-- Anyone who's tried Obsidian before and gave up because it felt like a second job
+| # | Agent | Role | Type | Superpower |
+|---|-------|------|------|------------|
+| 1 | **Architect** | Vault Structure & Setup | Subagent | Designs your entire vault, runs onboarding, sets the rules everyone follows |
+| 2 | **Scribe** | Text Capture | Subagent | Transforms your messy, typo-filled, stream-of-consciousness dumps into clean notes |
+| 3 | **Sorter** | Inbox Triage | In-Context | Empties your inbox every evening and routes every note to its perfect home |
+| 4 | **Seeker** | Search & Intelligence | Subagent | Finds anything in your vault, synthesizes answers across notes with citations |
+| 5 | **Connector** | Knowledge Graph | In-Context | Discovers hidden links between your notes, even ones you'd never think of |
+| 6 | **Librarian** | Vault Maintenance | In-Context | Weekly health checks, deduplication, broken link repair, growth analytics |
+| 7 | **Transcriber** | Audio & Meetings | In-Context | Turns recordings and transcripts into rich, structured meeting notes |
 
-If you've ever thought *"I need to get organized, but I'm too exhausted to get organized"*, this is for you.
-
----
-
-## Important disclaimers
-
-> **Please read the [full disclaimers](docs/DISCLAIMERS.md) before using this project.**
-
-Key points:
-
-- **This software is for personal use on your own data.** You are responsible for GDPR/CCPA compliance if you process third-party data (e.g., emails containing other people's information).
-- **No warranty.** Provided "as is". Back up your vault. The author accepts no liability.
-- **No responsibility for forks or misuse.** This is a personal productivity tool. Malicious repurposing is explicitly condemned.
-
-> **By using this software, you agree to the [Terms of Use](TERMS_OF_USE.md).** During onboarding, the Architect will ask you to explicitly accept these terms before proceeding.
+**Architecture**: 3 subagents (Architect, Scribe, Seeker) run as isolated subagent processes via OpenCode's Task tool. 4 in-context agents (Sorter, Connector, Librarian, Transcriber) handle simpler tasks directly in AGENTS.md.
 
 ---
 
-## The Crew
+## Works in any language
 
-| # | Agent | Role | Superpower |
-|---|-------|------|------------|
-| 1 | **Architect** | Vault Structure & Setup | Designs your entire vault, runs onboarding, sets the rules everyone follows |
-| 2 | **Scribe** | Text Capture | Transforms your messy, typo-filled, stream-of-consciousness dumps into clean notes |
-| 3 | **Sorter** | Inbox Triage | Empties your inbox every evening and routes every note to its perfect home |
-| 4 | **Seeker** | Search & Intelligence | Finds anything in your vault, synthesizes answers across notes with citations |
-| 5 | **Connector** | Knowledge Graph | Discovers hidden links between your notes, even ones you'd never think of |
-| 6 | **Librarian** | Vault Maintenance | Weekly health checks, deduplication, broken link repair, growth analytics |
-| 7 | **Transcriber** | Audio & Meetings | Turns recordings and transcripts into rich, structured meeting notes |
-| 8 | **Postman** | Email & Calendar | Bridges Gmail and Google Calendar with your vault: deadline radar, meeting prep |
-
-> **The agents coordinate through a dispatcher.** When the Transcriber processes a meeting and discovers a new project, the dispatcher chains the Architect to create the folder structure. When the Postman finds emails about deadlines, the dispatcher routes to the Sorter. It's a crew, not a collection of isolated tools.
-
----
-
-## How it works
+The Crew is built in English but **responds in whatever language you write in**. Italian, French, Spanish, German, Portuguese, Japanese: just talk, and the agents match you.
 
 ```
-You talk to Claude  →  The right agent activates  →  Your vault gets updated
+"Salva questa nota veloce..."       → Scribe responds in Italian
+"Was habe ich diese Woche geplant?" → Seeker responds in German
+"Check my inbox"                    → Sorter responds in English
 ```
 
-Each crew member is an isolated AI with its own system prompt, tool restrictions, and model assignment. You clone the repo into your vault, run a setup script, and from that moment on you manage everything through conversation. No GUI, no drag-and-drop, no manual file management.
-
-### Architecture
-
-```mermaid
-graph TB
-    User((You))
-    Claude["Claude Code\nDispatcher"]
-
-    User -->|"talk naturally"| Claude
-    Claude -->|"activates the right agent"| Agents
-    Claude -->|"chains agents when needed"| Agents
-
-    subgraph Agents["The Crew"]
-        direction TB
-
-        subgraph Core["Core: Knowledge Management"]
-            Architect["Architect\nVault Setup"]
-            Scribe["Scribe\nNote Capture"]
-            Sorter["Sorter\nInbox Triage"]
-            Seeker["Seeker\nSearch"]
-            Connector["Connector\nKnowledge Graph"]
-            Librarian["Librarian\nVault Health"]
-        end
-
-        subgraph External["Integrations"]
-            Transcriber["Transcriber\nAudio & Meetings"]
-            Postman["Postman\nEmail & Calendar"]
-        end
-    end
-
-    Agents <-->|"read & write"| Vault
-
-    subgraph Vault["Your Obsidian Vault"]
-        direction LR
-        Inbox["00-Inbox"]
-        Projects["01-Projects"]
-        Areas["02-Areas"]
-        Resources["03-Resources"]
-        Archive["04-Archive"]
-        Daily["07-Daily"]
-    end
-
-    style User fill:#7c3aed,stroke:#5b21b6,color:#fff
-    style Claude fill:#3b82f6,stroke:#2563eb,color:#fff
-    style Core fill:#e0e7ff,stroke:#818cf8
-    style External fill:#dbeafe,stroke:#60a5fa
-```
-
-### Agent Coordination Flow
-
-```mermaid
-sequenceDiagram
-    participant U as You
-    participant D as Dispatcher
-    participant T as Transcriber
-    participant A as Architect
-    participant P as Postman
-    participant S as Sorter
-
-    U->>D: "Process my meeting recording"
-    D->>T: activates
-    T->>T: transcribes & creates note
-    T-->>D: "Suggested next agent: Architect<br/>(new project mentioned)"
-    D->>A: chains automatically
-    A->>A: creates folder structure
-
-    U->>D: "Check my email"
-    D->>P: activates
-    P->>P: scans Gmail, saves notes
-    P-->>D: "Suggested next agent: Sorter<br/>(deadline notes in Inbox)"
-    D->>S: chains automatically
-    S->>S: files notes to correct locations
-```
-
-### Works on both Claude Code CLI and Claude Code Desktop (Cowork)
-
-The installer sets up **two parallel formats** so the Crew works everywhere:
-
-| Format | Location | Used by |
-|--------|----------|---------|
-| **Subagents** | `.claude/agents/` | Claude Code CLI (`claude` in terminal) |
-| **Skills** | `.claude/skills/` | Claude Code Desktop / Cowork |
-
-You don't need to choose. `launchme.sh` installs both automatically. Same agents, same behavior, same prompts. The only difference is the format Claude reads them in.
-
-Your vault follows a hybrid **PARA + Zettelkasten** structure:
-
-```
-00-Inbox/          Capture everything here first
-01-Projects/       Active projects with deadlines
-02-Areas/          Ongoing responsibilities
-03-Resources/      Reference material, guides, how-tos
-04-Archive/        Completed or historical content
-05-People/         Your personal CRM
-06-Meetings/       Timestamped meeting notes
-07-Daily/          Daily notes and journals
-MOC/               Maps of Content (thematic indexes)
-Templates/         Obsidian note templates
-Meta/              Vault config, agent logs, health reports
-```
+No translations to install. No language packs. It just works.
 
 ---
 
 ## Quick start
 
-> **Prerequisite**: You need [Claude Code](https://claude.ai/code) with a Claude Pro, Max, or Team subscription, and [Obsidian](https://obsidian.md) (free).
+> **Prerequisites**: [OpenCode CLI](https://opencode.ai) and [Obsidian](https://obsidian.md) (free).
 
 ### 1. Create your Obsidian vault
 
@@ -209,106 +72,170 @@ Open Obsidian and create a new vault (or use an existing one).
 
 ```bash
 cd /path/to/your-vault
-git clone https://github.com/gnekt/My-Brain-Is-Full-Crew.git
+git clone https://github.com/munitras/My-Brain-Is-Full-Crew.git
+cd My-Brain-Is-Full-Crew
 ```
 
 ### 3. Run the installer
 
 ```bash
-cd My-Brain-Is-Full-Crew
-bash scripts/launchme.sh
+bash scripts/install-opencode.sh
 ```
 
-The script asks a couple of questions and copies the agents into your vault's `.claude/` directory. That's it. When Claude Code is open in your vault folder, the agents activate automatically. When you're in any other project, they don't.
-
-> **Never used a terminal before?** See the [step-by-step guide for beginners](docs/getting-started.md). It walks you through everything, or just show this page to a tech-savvy friend. It takes 60 seconds.
+The script will:
+- Verify file integrity (security check)
+- Copy agents into your vault's `.opencode/` directory
+- Create the vault folder structure
+- Ask a few questions to personalize your setup
 
 ### 4. Initialize
 
-Open Claude Code **inside your vault folder** and say:
+Open OpenCode **inside your vault folder**:
+
+```bash
+cd /path/to/your-vault
+opencode
+```
+
+Then say:
 
 > **"Initialize my vault"**
 
-The **Architect** will start a friendly onboarding conversation:
-
-1. **Who are you?** Name, language, role, what brought you here
-2. **What do you need?** Which agents to activate, which areas of life to manage
-3. **Integrations** Gmail and Google Calendar connections
-
-After onboarding, the Architect creates your entire vault folder structure, saves your profile, leaves you a welcome note, and you're ready to go.
+The **Architect** agent will guide you through onboarding and create your entire vault structure.
 
 ### 5. Start using it
 
 | You say | What happens |
 |---------|-------------|
-| *"Save this: meeting with Marco about the Q3 budget, he wants the report by Friday"* | **Scribe** captures it as a clean note with tasks, wikilinks, and deadline |
-| *"Triage my inbox"* | **Sorter** files everything, updates MOCs, gives you a summary |
-| *"What did we decide about the pricing strategy?"* | **Seeker** searches your vault, synthesizes the answer with source citations |
-| *"Check my email"* | **Postman** scans Gmail, saves important emails, flags deadlines |
-| *"Weekly review"* | **Librarian** runs a full vault audit: broken links, duplicates, health score |
-| *"Find connections for my latest note"* | **Connector** discovers hidden links to other notes in your vault |
+| *"Save this: meeting with Marco about the Q3 budget"* | **Scribe** captures it with clean formatting and tasks |
+| *"Triage my inbox"* | **Sorter** files everything, updates MOCs |
+| *"What did we decide about pricing?"* | **Seeker** searches your vault, synthesizes the answer with citations |
+| *"Weekly review"* | **Librarian** audits broken links, duplicates, health score |
+| *"Find connections for my latest note"* | **Connector** discovers hidden links in your vault |
 
 ---
 
-## Works in any language
-
-The Crew is built in English but **responds in whatever language you write in**. Italian, French, Spanish, German, Portuguese, Japanese: just talk, and the agents match you.
+## Vault structure
 
 ```
-"Salva questa nota veloce..."          → Scribe responds in Italian
-"Vérifie mon email..."                 → Postman responds in French
-"Was habe ich diese Woche geplant?"    → Seeker responds in German
-"Check my inbox"                       → Sorter responds in English
+00-Inbox/          ← Capture everything here first
+01-Projects/       ← Active projects with deadlines
+02-Areas/          ← Ongoing responsibilities
+03-Resources/      ← Reference material, guides, how-tos
+04-Archive/        ← Completed or historical content
+05-People/         ← Your personal CRM
+06-Meetings/       ← Timestamped meeting notes
+07-Daily/          ← Daily notes and journals
+MOC/               ← Maps of Content (thematic indexes)
+Templates/         ← Obsidian note templates
+Meta/              ← Vault config, agent logs, health reports
 ```
 
-No translations to install. No language packs. It just works.
-
 ---
 
-## Works from your phone too
+## Security
 
-You can control the Crew from your phone using Claude Code's **Remote Control** feature. Your computer runs Claude Code locally (with full vault and agent access), and your phone acts as a remote interface through the browser or the Claude mobile app.
+### Path Boundary Protection
 
-Capture a quick thought on a walk. Check your email from the couch. Search your vault from the supermarket. Everything runs on your computer; your phone is just the remote.
+**All agents are RESTRICTED to the vault root directory.** They cannot:
 
-> **[Full setup guide](docs/mobile-access.md)** (takes 2 minutes)
+- Write to paths containing `../`
+- Write to absolute paths outside the vault
+- Access system directories (`/etc`, `/usr`, etc.)
+- Read environment variables or secrets
+- Follow symlinks that escape the vault
 
----
+### Integrity Verification
 
-## Agent coordination
-
-Agents coordinate through a dispatcher-driven orchestration system. When an agent finishes its task and detects work for another agent, it signals the dispatcher via a `### Suggested next agent` section in its output. The dispatcher reads this and automatically chains the next agent:
-
-- The **Transcriber** processes a meeting that introduces a new project -- the dispatcher chains the **Architect** to create the folder structure
-- The **Postman** finds emails about deadlines -- the dispatcher chains the **Sorter** to file them
-- The **Connector** finds orphan notes -- the dispatcher chains the **Librarian** to investigate
-- The **Sorter** finds notes that belong to a new area -- the dispatcher chains the **Architect** to build it
-
-No agent works in isolation. The crew is greater than the sum of its parts.
-
----
-
-## Required integrations
-
-The **Postman** agent requires:
-- **Gmail** MCP connector (to read and process your inbox)
-- **Google Calendar** MCP connector (to import events and manage your schedule)
-
-The `launchme.sh` script offers to set up `.mcp.json` in your vault automatically. You just need to authorize them when prompted by Claude Code.
-
-All other agents work with just your local Obsidian vault. No integrations needed.
-
-### Updating
-
-After pulling new changes from the repo:
+After cloning and after updates, verify file integrity:
 
 ```bash
-cd /path/to/your-vault/My-Brain-Is-Full-Crew
-git pull
-bash scripts/updateme.sh
+bash scripts/verify-integrity.sh
 ```
 
-Only changed files are updated. Your vault notes are never touched.
+This checks SHA256 hashes of all agent files against the manifest. If verification fails, **do not proceed** — this may indicate tampering.
+
+### Upstream Merge Safety
+
+Before merging changes from upstream:
+
+```bash
+bash scripts/verify-upstream-merge.sh
+```
+
+This scans for suspicious patterns (network calls, eval/exec) in changed files.
+
+See [SECURITY.md](SECURITY.md) for full details.
+
+---
+
+## Upstream tracking
+
+This fork tracks the original [My-Brain-Is-Full-Crew](https://github.com/gnekt/My-Brain-Is-Full-Crew) repository:
+
+```bash
+# Check for upstream updates
+git fetch fork-from
+bash scripts/verify-upstream-merge.sh
+
+# If clean, merge
+git checkout upstream
+git merge fork-from/main
+git checkout main
+git merge upstream
+bash scripts/generate-manifest.sh
+```
+
+---
+
+## Architecture
+
+```
+OpenCode CLI
+     │
+     ▼ reads AGENTS.md
+┌────────────────────┐
+│  AGENTS.md         │  ← Dispatcher with routing rules
+│  (main dispatcher) │
+└────────────────────┘
+     │
+     ├── Task tool ──► Architect (subagent)
+     ├── Task tool ──► Scribe (subagent)
+     ├── Task tool ──► Seeker (subagent)
+     │
+     └── Handle in-context:
+         ├─ Sorter
+         ├─ Connector
+         ├─ Librarian
+         └─ Transcriber
+```
+
+Each agent has specific tool permissions:
+
+| Agent | Read | Write | Edit | Bash | WebFetch |
+|-------|------|-------|------|------|----------|
+| Architect | ✓ | ✓ | ✓ | ask | ✗ |
+| Scribe | ✓ | ✓ | ✓ | ✗ | ✗ |
+| Sorter | ✓ | ✓ | ✓ | ✗ | ✗ |
+| Seeker | ✓ | ✗ | ✗ | ✗ | ask |
+| Connector | ✓ | ✓ | ✓ | ✗ | ✗ |
+| Librarian | ✓ | ✓ | ✓ | ask | ✗ |
+| Transcriber | ✓ | ✓ | ✓ | ✗ | ✗ |
+
+---
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `AGENTS.md` | Main dispatcher with routing logic |
+| `.opencode/agents/*.md` | Subagent definitions (Architect, Scribe, Seeker) |
+| `.opencode/references/*.md` | Shared documentation for all agents |
+| `scripts/install-opencode.sh` | Initial setup |
+| `scripts/update-opencode.sh` | Update after pulling changes |
+| `scripts/verify-integrity.sh` | Verify file hashes |
+| `scripts/generate-manifest.sh` | Regenerate integrity manifest |
+| `SECURITY.md` | Security policy and practices |
 
 ---
 
@@ -320,68 +247,44 @@ Only changed files are updated. Your vault notes are never touched.
 
 ---
 
-## Project structure
+## Updating
 
-```
-My-Brain-Is-Full-Crew/               ← cloned inside your vault
-├── agents/                          The 8 subagents
-│   ├── architect.md                   Vault setup & onboarding
-│   ├── scribe.md                      Text capture & note creation
-│   ├── sorter.md                      Inbox triage & filing
-│   ├── seeker.md                      Search & knowledge retrieval
-│   ├── connector.md                   Knowledge graph & link analysis
-│   ├── librarian.md                   Vault health & maintenance
-│   ├── transcriber.md                 Audio & meeting transcription
-│   └── postman.md                     Email & calendar integration
-├── skills/                          Auto-generated skills (for Cowork/Desktop)
-│   └── {name}/SKILL.md               One per agent, same content
-├── references/                      Shared agent documentation
-├── scripts/
-│   ├── launchme.sh                    First-time installer
-│   ├── updateme.sh                    Post-pull updater
-│   └── generate-skills.py             Converts agents to skills
-├── docs/                            User-facing documentation
-│   ├── getting-started.md             Step-by-step setup guide
-│   ├── examples.md                    Real-world usage examples
-│   └── agents/                        Deep-dive into each agent
-├── .mcp.json                        MCP servers (Gmail, Google Calendar)
-├── .claude-plugin/plugin.json       Plugin manifest (for --plugin-dir)
-├── LICENSE
-├── README.md                        You are here
-└── CONTRIBUTING.md
+After pulling changes from the repo:
+
+```bash
+cd /path/to/your-vault/My-Brain-Is-Full-Crew
+git pull
+bash scripts/verify-integrity.sh
+bash scripts/update-opencode.sh
 ```
 
-After running `launchme.sh`, your vault looks like:
-
-```
-your-vault/
-├── .claude/
-│   ├── agents/          ← crew subagents (Claude Code CLI)
-│   ├── skills/          ← crew skills (Claude Code Desktop / Cowork)
-│   └── references/      ← shared docs
-├── CLAUDE.md            ← project instructions
-├── .mcp.json            ← Gmail + Calendar (if enabled)
-├── My-Brain-Is-Full-Crew/  ← the repo (for updates)
-└── ... your Obsidian notes
-```
+Only changed files are updated. Your vault notes are never touched.
 
 ---
 
-## Contributing (seriously, please help)
+## Contributing
 
-This started as one person's survival tool. I'm sharing it because I think it can help others, but **I know it can be much better**, and I need help from people who know Claude Code, prompt engineering, and Obsidian better than I do.
+PRs are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Every single PR is welcome.** I mean it. If you see something that could be improved (a better prompt structure, a smarter agent behavior, a more elegant architecture) please submit it. I won't be precious about my code. The goal is to help people, not to protect my ego.
+Areas where help is especially welcome:
+- Improving agent prompts for better coordination
+- Adding new agent capabilities
+- Fixing edge cases
+- Documentation improvements
+- Security hardening
 
-If you want to:
-- **Improve an agent**: make it smarter, add a mode, fix edge cases
-- **Fix my prompts**: if you know better patterns, teach me
-- **Propose a new crew member**: a new agent for a new domain
-- **Report a bug**: something an agent does wrong
-- **Add examples**: share how you use the Crew
-- **Just tell me what I'm doing wrong**: I'll listen
+---
 
-...PRs, issues, and honest feedback are all welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+## Differences from Claude Version
+
+| Claude Version | OpenCode Version |
+|----------------|------------------|
+| `CLAUDE.md` dispatcher | `AGENTS.md` dispatcher |
+| `.claude/agents/` with YAML frontmatter | `.opencode/agents/` with OpenCode frontmatter |
+| 8 agents (including Postman) | 7 agents (Postman removed) |
+| MCP for Gmail/Calendar | No external integrations |
+| Subagent `Agent` tool | Subagent `Task` tool |
+| `.claude/skills/` | In-context agent definitions |
 
 ---
 
@@ -393,27 +296,27 @@ The Crew is designed for people who are overwhelmed, not for people who enjoy or
 
 - **Chat is the interface**: no manual file management
 - **Agents handle the boring stuff**: filing, linking, maintaining
-- **Any language, any time**: your brain shouldn't have to switch languages to stay organized
-- **Conservative by default**: agents never delete, always archive. They ask before making big decisions.
+- **Any language, any time**: your brain shouldn't have to switch languages
+- **Conservative by default**: agents never delete, always archive
 
 ---
 
 ## Star this repo
 
-If the Crew helps you, or if you just think it's a cool idea, consider starring this repo. It helps others find it, and it motivates continued development.
+If the Crew helps you, consider starring this repo. It helps others find it.
+
+---
+
+## Credits
+
+Adapted from [My-Brain-Is-Full-Crew](https://github.com/gnekt/My-Brain-Is-Full-Crew) by **Christian Di Maio (@gnekt)**.
+
+Original project designed for Claude Code. This fork is OpenCode-native with security hardening.
 
 ---
 
 ## License
 
-MIT: use it, modify it, share it. Just keep the attribution.
+MIT: use it, modify it, share it. Keep the attribution.
 
-**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.** The authors are not liable for any claim, damages, or other liability arising from the use of this software. See the [MIT License](LICENSE) for full terms.
-
----
-
-<p align="center">
-  <i>Built by someone who got tired of forgetting things.</i>
-  <br><br>
-  <a href="docs/getting-started.md"><strong>Get Started</strong></a> · <a href="docs/examples.md"><strong>Examples</strong></a> · <a href="docs/agents/architect.md"><strong>Meet the Agents</strong></a> · <a href="CONTRIBUTING.md"><strong>Contribute</strong></a>
-</p>
+**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.** See [LICENSE](LICENSE) for full terms.

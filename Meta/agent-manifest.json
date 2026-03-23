@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-03-24T00:00:00Z",
+  "files": {
+    ".opencode/agents/architect.md": "8f1025f753e0cf24317ab128de559ad7dcc8ccaa9338ba5202213d882c5bc976",
+    ".opencode/agents/scribe.md": "42e738123f2ec92a0a8131511fb40a0e64315ae90b938cf2ad94081801f286cd",
+    ".opencode/agents/seeker.md": "e414a9bba88be04ce7118c9f9a5e7d9e7c41e8f8d85e8649e4dc57483aa29423",
+    ".opencode/references/agents.md": "8f7162c5fafa27d058ecf612bcaa8da03c8e66636f677bd171bfa2b67a725849",
+    ".opencode/references/inter-agent-messaging.md": "d7d02e4edf0a74cb0ab4e41e3787ed777f5ba93520e4b6043d16661bbfc447af",
+    "AGENTS.md": "527a937e0b5722b2c1de4a2354ba0141b1f3dc1692834b851246d7b544842600"
+  }
+}

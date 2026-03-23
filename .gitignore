@@ -1,11 +1,19 @@
 # Build artifacts
 dist/
-scripts/build.sh
 logs/
+*.zip
+
 # macOS
 .DS_Store
 **/.DS_Store
-Test-SecondBrain/
-*.zip
-# Dev config
-.claude/settings.local.json
+
+# OpenCode session data (per-workspace)
+.opencode
+
+# Test directories
+Test-*/
+*.test/
+
+# Dev config (local only)
+*.local.json
+*.local.md

@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# =============================================================================
+# My Brain Is Full - Crew :: OpenCode Updater
+# =============================================================================
+# After pulling new changes from the repo, run this to update the agents
+# in your vault:
+#
+#   cd /path/to/your-vault/My-Brain-Is-Full-Crew
+#   git pull
+#   bash scripts/update-opencode.sh
+#
+# =============================================================================
+
+set -eo pipefail
+
+# ── Colors ──────────────────────────────────────────────────────────────────
+if [[ -t 1 ]]; then
+  GREEN='\033[0;32m'; CYAN='\033[0;36m'; YELLOW='\033[1;33m'
+  RED='\033[0;31m'; BOLD='\033[1m'; DIM='\033[2m'; NC='\033[0m'
+else
+  GREEN=''; CYAN=''; YELLOW=''; RED=''; BOLD=''; DIM=''; NC=''
+fi
+
+info()    { echo -e "   ${CYAN}>${NC} $*"; }
+success() { echo -e "   ${GREEN}✓${NC} $*"; }
+warn()    { echo -e "   ${YELLOW}!${NC} $*"; }
+die()     { echo -e "\n   ${RED}Error: $*${NC}\n" >&2; exit 1; }
+
+# ── Find paths ──────────────────────────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+VAULT_DIR="$(cd "$REPO_DIR/.." && pwd)"
+
+[[ -d "$REPO_DIR/.opencode" ]] || die "Can't find .opencode/ — are you running this from the repo?"
+
+# ── Integrity check ──────────────────────────────────────────────────────────
+if [[ -f "$REPO_DIR/Meta/agent-manifest.json" ]] && command -v sha256sum >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+  echo ""
+  info "Verifying file integrity..."
+  
+  MANIFEST="$REPO_DIR/Meta/agent-manifest.json"
+  VERIFIED=0
+  FAILED=0
+  
+  for relpath in $(jq -r '.files | keys[]' "$MANIFEST" 2>/dev/null || true); do
+    filepath="$REPO_DIR/$relpath"
+    if [[ ! -f "$filepath" ]]; then
+      echo -e "   ${RED}✗ MISSING: $relpath${NC}"
+      FAILED=$((FAILED + 1))
+      continue
+    fi
+    
+    expected_hash=$(jq -r ".files[\"$relpath\"]" "$MANIFEST")
+    actual_hash=$(sha256sum "$filepath" | cut -d' ' -f1)
+    
+    if [[ "$expected_hash" != "$actual_hash" ]]; then
+      echo -e "   ${RED}✗ MISMATCH: $relpath${NC}"
+      FAILED=$((FAILED + 1))
+    else
+      VERIFIED=$((VERIFIED + 1))
+    fi
+  done
+  
+  if [[ $FAILED -gt 0 ]]; then
+    echo ""
+    echo -e "${RED}${BOLD}   ⚠️  $FAILED file(s) failed integrity check!${NC}"
+    echo -e "${RED}   This may indicate tampering or corruption.${NC}"
+    echo -e "${RED}   Do NOT proceed with this update.${NC}"
+    echo ""
+    read -r -p "   Continue anyway? [y/N] " FORCE
+    if [[ ! "$FORCE" =~ ^[Yy]$ ]]; then
+      exit 1
+    fi
+    warn "Proceeding with failed integrity check"
+  else
+    success "Integrity check passed ($VERIFIED files)"
+  fi
+fi
+
+# ── Banner ──────────────────────────────────────────────────────────────────
+echo ""
+echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
+echo -e "${BOLD}║  My Brain Is Full — OpenCode Update       ║${NC}"
+echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
+echo ""
+
+# ── Check vault has been set up ─────────────────────────────────────────────
+if [[ ! -d "$VAULT_DIR/.opencode/agents" ]]; then
+  die "No .opencode/agents/ found in $VAULT_DIR — run install-opencode.sh first"
+fi
+
+# ── Update agents ───────────────────────────────────────────────────────────
+AGENT_COUNT=0
+for agent in "$REPO_DIR/.opencode/agents/"*.md; do
+  if [[ -f "$agent" ]]; then
+    name="$(basename "$agent")"
+    if [[ -f "$VAULT_DIR/.opencode/agents/$name" ]]; then
+      if ! diff -q "$agent" "$VAULT_DIR/.opencode/agents/$name" >/dev/null 2>&1; then
+        cp "$agent" "$VAULT_DIR/.opencode/agents/"
+        info "Updated $name"
+        AGENT_COUNT=$((AGENT_COUNT + 1))
+      fi
+    else
+      cp "$agent" "$VAULT_DIR/.opencode/agents/"
+      info "Added $name (new agent)"
+      AGENT_COUNT=$((AGENT_COUNT + 1))
+    fi
+  fi
+done
+
+# ── Update references ───────────────────────────────────────────────────────
+REF_COUNT=0
+mkdir -p "$VAULT_DIR/.opencode/references"
+for ref in "$REPO_DIR/.opencode/references/"*.md; do
+  if [[ -f "$ref" ]]; then
+    name="$(basename "$ref")"
+    if ! diff -q "$ref" "$VAULT_DIR/.opencode/references/$name" >/dev/null 2>&1; then
+      cp "$ref" "$VAULT_DIR/.opencode/references/"
+      info "Updated reference: $name"
+      REF_COUNT=$((REF_COUNT + 1))
+    fi
+  fi
+done
+
+# ── Update AGENTS.md ────────────────────────────────────────────────────────
+AGENTS_MD_UPDATED=""
+if [[ -f "$REPO_DIR/AGENTS.md" ]]; then
+  if [[ ! -f "$VAULT_DIR/AGENTS.md" ]] || ! diff -q "$REPO_DIR/AGENTS.md" "$VAULT_DIR/AGENTS.md" >/dev/null 2>&1; then
+    cp "$REPO_DIR/AGENTS.md" "$VAULT_DIR/AGENTS.md"
+    info "Updated AGENTS.md"
+    AGENTS_MD_UPDATED="1"
+  fi
+fi
+
+# ── Summary ─────────────────────────────────────────────────────────────────
+echo ""
+if [[ $AGENT_COUNT -eq 0 && $REF_COUNT -eq 0 && -z "$AGENTS_MD_UPDATED" ]]; then
+  success "Everything is already up to date!"
+else
+  success "Updated $AGENT_COUNT agent(s), $REF_COUNT reference(s)"
+fi
+echo ""
+echo -e "   ${DIM}Restart OpenCode to pick up the changes.${NC}"
+echo ""
