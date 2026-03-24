@@ -8,7 +8,17 @@ logs/
 **/.DS_Store
 
 # OpenCode session data (per-workspace)
-.opencode
+.opencode/node_modules/
+.opencode/bun.lock
+.opencode/package.json
+.opencode/.gitignore
+
+# Local vault path (per-install)
+.mbifc-vault-path
+
+# Runtime files (user-generated)
+Meta/agent-messages.md
+Meta/agent-log.md
 
 # Test directories
 Test-*/

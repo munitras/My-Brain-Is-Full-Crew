@@ -1,0 +1,74 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+---
+
+## [Unreleased] — 2026-03-24
+
+### Fixed
+
+**Inter-Agent Messaging Protocol Not Working** — Field operators reported `Meta/agent-messages.md` remaining empty with no inter-agent coordination happening.
+
+**Root Cause**: In-context agents (Sorter, Connector, Librarian, Transcriber) defined in `AGENTS.md` had no pre-task instruction to check for pending messages. Subagent definitions (scribe, seeker) lacked formal task checklists.
+
+**Changes**:
+- `AGENTS.md`: Added **Pre-Task Checklist** to all 4 in-context agents requiring them to check `Meta/agent-messages.md` before starting work
+- `AGENTS.md`: Added message-leaving instructions (Sorter → Architect for unknown destinations, Connector → Architect for new MOC needs)
+- `.opencode/agents/scribe.md`: Added Quick Reference Task Checklist section
+- `.opencode/agents/seeker.md`: Added Quick Reference Task Checklist section
+- `.opencode/references/agents.md`: Added Pre-Task notes for all 7 agents
+
+### Fixed (Security)
+
+**Manifest Generation Script Corruption** — `scripts/generate-manifest.sh` was injecting success messages into the JSON output, producing invalid manifests.
+
+**Changes**:
+- `scripts/generate-manifest.sh`: Moved success message printing outside the JSON generation block
+
+### Fixed (Deployment)
+
+**Update Script Vault Path Detection** — `scripts/update-opencode.sh` failed when repo wasn't a subdirectory inside the vault.
+
+**Changes**:
+- `scripts/install-opencode.sh`: Now stores vault path in `.mbifc-vault-path` file
+- `scripts/update-opencode.sh`: Reads stored vault path; prompts for path if not found
+
+---
+
+## Git Commit Plan
+
+**Single atomic commit** (recommended):
+
+```
+fix: inter-agent messaging and update script vault detection
+
+Inter-Agent Messaging:
+- Add Pre-Task Checklist to all in-context agents in AGENTS.md
+- Add Task Checklist sections to scribe.md and seeker.md
+- Update agents.md reference with Pre-Task notes for all agents
+- Fix manifest script success messages corrupting JSON output
+
+Update Script:
+- Store vault path during install for reliable updates
+- Read stored path; prompt interactively if missing
+
+Fixes: #field-1 agents not checking messages
+Fixes: #field-2 update script failing outside vault
+```
+
+**Files to stage**:
+- `AGENTS.md`
+- `.opencode/agents/scribe.md`
+- `.opencode/agents/seeker.md`
+- `.opencode/references/agents.md`
+- `Meta/agent-manifest.json`
+- `scripts/generate-manifest.sh`
+- `scripts/install-opencode.sh`
+- `scripts/update-opencode.sh`
+- `CHANGELOG.md` (new)
+
+**Files to gitignore** (not committed):
+- `.mbifc-vault-path` — local install path, user-specific
+- `Meta/agent-messages.md` — runtime data
+- `tasks-bugs.md` — internal notes

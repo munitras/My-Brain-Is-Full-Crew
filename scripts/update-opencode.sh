@@ -29,7 +29,22 @@ die()     { echo -e "\n   ${RED}Error: $*${NC}\n" >&2; exit 1; }
 # ── Find paths ──────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-VAULT_DIR="$(cd "$REPO_DIR/.." && pwd)"
+
+# ── Determine vault directory ─────────────────────────────────────────────
+# Priority: 1) Stored path from install, 2) Parent directory (legacy assumption)
+VAULT_DIR=""
+if [[ -f "$REPO_DIR/.mbifc-vault-path" ]]; then
+  VAULT_DIR=$(cat "$REPO_DIR/.mbifc-vault-path" | tr -d '\n')
+  if [[ ! -d "$VAULT_DIR" ]]; then
+    warn "Stored vault path no longer exists: $VAULT_DIR"
+    VAULT_DIR=""
+  fi
+fi
+
+if [[ -z "$VAULT_DIR" ]]; then
+  # Legacy: assume repo is a subdirectory inside the vault
+  VAULT_DIR="$(cd "$REPO_DIR/.." && pwd)"
+fi
 
 [[ -d "$REPO_DIR/.opencode" ]] || die "Can't find .opencode/ — are you running this from the repo?"
 
@@ -86,7 +101,21 @@ echo ""
 
 # ── Check vault has been set up ─────────────────────────────────────────────
 if [[ ! -d "$VAULT_DIR/.opencode/agents" ]]; then
-  die "No .opencode/agents/ found in $VAULT_DIR — run install-opencode.sh first"
+  echo ""
+  echo -e "   ${YELLOW}Can't find installed agents in:${NC}"
+  echo -e "   ${DIM}$VAULT_DIR${NC}"
+  echo ""
+  echo -e "   ${BOLD}Enter the path to your Obsidian vault:${NC}"
+  read -r -p "   > " INPUT_VAULT
+  INPUT_VAULT="${INPUT_VAULT/#\~/$HOME}"
+  if [[ -d "$INPUT_VAULT/.opencode/agents" ]]; then
+    VAULT_DIR="$INPUT_VAULT"
+    # Save for future updates
+    echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
+    success "Vault path updated"
+  else
+    die "No .opencode/agents/ found in $INPUT_VAULT — run install-opencode.sh first"
+  fi
 fi
 
 # ── Update agents ───────────────────────────────────────────────────────────

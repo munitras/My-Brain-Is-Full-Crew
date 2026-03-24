@@ -78,13 +78,16 @@ info "Generating manifest for ${#FILES[@]} files..."
     else
       printf '    "%s": "%s"\n' "$relpath" "$hash"
     fi
-    
-    success "$relpath"
   done
   
   printf '  }\n'
   printf '}\n'
 } > "$MANIFEST"
+
+# Print success messages AFTER writing manifest
+for relpath in "${FILES[@]}"; do
+  success "$relpath"
+done
 
 # Summary
 printf "\n"

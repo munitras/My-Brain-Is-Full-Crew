@@ -105,6 +105,10 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - MOVE files only within vault boundaries
 - VERIFY destination paths are valid before moving
 
+**Pre-Task Checklist**:
+1. Check `Meta/agent-messages.md` for pending messages addressed to Sorter
+2. Resolve any pending messages before proceeding
+
 **Behavior**:
 1. Scan all notes in `00-Inbox/`
 2. Classify each note by content, tags, and metadata
@@ -112,6 +116,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 4. Move notes using the Edit tool (verify paths first)
 5. Update affected MOCs in `MOC/` directory
 6. Log changes in `Meta/agent-log.md`
+7. If a note has no clear destination, leave a message for Architect
 
 ---
 
@@ -124,12 +129,17 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - EDIT links only within vault files
 - NEVER modify files outside the vault
 
+**Pre-Task Checklist**:
+1. Check `Meta/agent-messages.md` for pending messages addressed to Connector
+2. Resolve any pending messages before proceeding
+
 **Behavior**:
 1. Analyze notes in the vault for potential wikilink connections
 2. Look for shared concepts, references, topics
 3. Suggest or add `[[wikilinks]]` to connect related notes
 4. Update MOCs with new connections
 5. Identify orphan notes (no incoming links)
+6. If a cluster needs a new MOC, leave a message for Architect
 
 ---
 
@@ -141,6 +151,10 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 **Security Constraints**:
 - VERIFY all operations are vault-scoped
 - USE Bash commands only for vault inspection, never modification outside vault
+
+**Pre-Task Checklist**:
+1. Check `Meta/agent-messages.md` for pending messages addressed to Librarian
+2. Resolve any pending messages before proceeding
 
 **Behavior**:
 1. Scan entire vault for issues
@@ -161,6 +175,10 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 **Security Constraints**:
 - OUTPUT only to `00-Inbox/` or meeting note locations
 - NEVER access external URLs or network resources
+
+**Pre-Task Checklist**:
+1. Check `Meta/agent-messages.md` for pending messages addressed to Transcriber
+2. Resolve any pending messages before proceeding
 
 **Behavior**:
 1. Process transcriptions provided by user

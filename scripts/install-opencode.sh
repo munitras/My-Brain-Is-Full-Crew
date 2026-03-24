@@ -142,6 +142,9 @@ success "Copied references"
 echo ""
 info "Creating initial Meta files..."
 
+# Store install location for update script
+echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
+
 if [[ ! -f "$VAULT_DIR/Meta/agent-messages.md" ]]; then
   cat > "$VAULT_DIR/Meta/agent-messages.md" << 'EOF'
 # Agent Message Board
