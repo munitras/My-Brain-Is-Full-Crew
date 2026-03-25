@@ -1,12 +1,13 @@
 {
   "version": "1.0.0",
-  "generated": "2026-03-24T06:53:00Z",
+  "generated": "2026-03-25T04:27:55Z",
   "files": {
-    ".opencode/agents/architect.md": "8f1025f753e0cf24317ab128de559ad7dcc8ccaa9338ba5202213d882c5bc976",
-    ".opencode/agents/scribe.md": "c756726ce4e36a283c56bdf624d3ca6fb8235dab712be5d5964b3b72de7617a8",
-    ".opencode/agents/seeker.md": "24c1655175baa5c30e4b1d276999f7a3f8dd31c09cc1f16446a7cfa943128ccb",
+    ".opencode/agents/architect.md": "4eab2c84454187f21c05f1948ca5f484460ce897de8e8bf148a3fc6c35c3a194",
+    ".opencode/agents/scribe.md": "c40589c03d19710ce7c5698de93670c4c9be98c04549bc323eea840e0a888c6c",
+    ".opencode/agents/seeker.md": "e0c6a2ec179593f05d67f9f8500fad1b312754f91dbd7eee6340d82a215caf7d",
     ".opencode/references/agents.md": "41e8709199c2bcca204a540c420be38f967d5e098ef908fc8cf5acd73d6d17ab",
-    ".opencode/references/inter-agent-messaging.md": "d7d02e4edf0a74cb0ab4e41e3787ed777f5ba93520e4b6043d16661bbfc447af",
-    "AGENTS.md": "b186f0c38555b41290e36ef965eff5fe7e56e152e6e2bc35317ecad73379c59d"
+    ".opencode/references/inter-agent-messaging.md": "44c70738699c66d6c5eed3eb8c3f2b7aada34d08708cbc9d6da9c7cb2a5b16e8",
+    "AGENTS.md": "ead1766afcd4d91b35ef9995890229fb8035f3523c43ffacea648241edaf163f",
+    "scripts/validate-paths.sh": "11531f9d4040e9abe6985a5c422957c36e676a932f65f390018c8844248b8c24"
   }
 }

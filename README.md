@@ -145,6 +145,8 @@ Meta/              ← Vault config, agent logs, health reports
 - Read environment variables or secrets
 - Follow symlinks that escape the vault
 
+Agents use `scripts/validate-paths.sh` for runtime path validation before performing any file operations.
+
 ### Integrity Verification
 
 After cloning and after updates, verify file integrity:
@@ -166,6 +168,23 @@ bash scripts/verify-upstream-merge.sh
 This scans for suspicious patterns (network calls, eval/exec) in changed files.
 
 See [SECURITY.md](SECURITY.md) for full details.
+
+---
+
+## Development & Testing
+
+This project uses [bats-core](https://github.com/bats-core/bats-core) for shell script testing.
+
+### Running Tests
+
+```bash
+bats tests/scripts.bats
+```
+
+The test suite covers:
+- Manifest generation and integrity verification
+- Installer behavior
+- Path validation logic
 
 ---
 
@@ -235,7 +254,9 @@ Each agent has specific tool permissions:
 | `scripts/update-opencode.sh` | Update after pulling changes |
 | `scripts/verify-integrity.sh` | Verify file hashes |
 | `scripts/generate-manifest.sh` | Regenerate integrity manifest |
-| `SECURITY.md` | Security policy and practices |
+ | `scripts/validate-paths.sh` | Runtime path boundary validator |
+ | `SECURITY.md` | Security policy and practices |
+ | `tests/scripts.bats` | Shell script test suite |
 
 ---
 

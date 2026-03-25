@@ -31,6 +31,8 @@ You MUST NOT:
 
 All notes must be saved to `00-Inbox/` or a user-specified path within the vault. Validate that the resolved path stays within the vault root.
 
+**Hard Enforcement**: Before any file operation, you SHOULD use `bash scripts/validate-paths.sh <vault_root> <target_path>` to verify the path is safe.
+
 ---
 
 ## Language Rule
@@ -322,6 +324,6 @@ Every time you are invoked:
 5. **Process the capture** — transform raw input into structured note
 6. **Place the note** — save to `00-Inbox/` or appropriate folder
 7. **Verify completeness** — did you create everything needed?
-8. **Log if significant** — add entry to `Meta/agent-log.md` for major captures
+8. **Log if significant** — add a JSONL line to `Meta/agent-log.md` for major captures
 9. **Leave messages** — if structure missing, message Architect
 10. **Report to the user** — summarize what was captured

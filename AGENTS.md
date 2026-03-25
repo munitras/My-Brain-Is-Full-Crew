@@ -17,6 +17,8 @@ Agents MUST NOT:
 
 If you encounter a path that would escape the vault root, **refuse the operation** and alert the user.
 
+**Hard Enforcement**: Before any file operation, you SHOULD use `bash scripts/validate-paths.sh <vault_root> <target_path>` to verify the path is safe.
+
 ---
 
 ## ROUTING RULES — MANDATORY
@@ -115,7 +117,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 3. Determine destination based on `Meta/vault-structure.md`
 4. Move notes using the Edit tool (verify paths first)
 5. Update affected MOCs in `MOC/` directory
-6. Log changes in `Meta/agent-log.md`
+6. Log changes in JSONL format to `Meta/agent-log.md`
 7. If a note has no clear destination, leave a message for Architect
 
 ---

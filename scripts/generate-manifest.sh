@@ -54,6 +54,9 @@ done
 # AGENTS.md
 [[ -f "$REPO_DIR/AGENTS.md" ]] && FILES+=("AGENTS.md")
 
+# New: include validate-paths.sh in manifest for security
+[[ -f "$REPO_DIR/scripts/validate-paths.sh" ]] && FILES+=("scripts/validate-paths.sh")
+
 if [[ ${#FILES[@]} -eq 0 ]]; then
   printf "   Error: No agent files found\n" >&2
   exit 1

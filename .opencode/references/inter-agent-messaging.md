@@ -7,7 +7,7 @@ All agents communicate asynchronously via `Meta/agent-messages.md`. This creates
 ## Message Format
 
 ```markdown
-## ⏳ [YYYY-MM-DD HH:MM] FROM: AgentName → TO: AgentName
+## ⏳ [YYYY-MM-DD HH:MM] FROM: AgentName → TO: AgentName [STATUS: PENDING|PROCESSING|RESOLVED]
 
 **Subject**: Brief subject line
 

@@ -36,7 +36,13 @@ VAULT_DIR="$(cd "$REPO_DIR/.." && pwd)"
 [[ -f "$REPO_DIR/AGENTS.md" ]] || die "Can't find AGENTS.md in $REPO_DIR"
 
 # ── Integrity check ──────────────────────────────────────────────────────────
-if [[ -f "$REPO_DIR/Meta/agent-manifest.json" ]] && command -v sha256sum >/dev/null 2>&1; then
+if [[ ! -f "$REPO_DIR/Meta/agent-manifest.json" ]]; then
+  echo ""
+  warn "No manifest found. Generating one now..."
+  bash "$REPO_DIR/scripts/generate-manifest.sh"
+fi
+
+if command -v sha256sum >/dev/null 2>&1; then
   echo ""
   info "Verifying file integrity..."
   

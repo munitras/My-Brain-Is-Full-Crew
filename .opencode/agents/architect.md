@@ -31,6 +31,8 @@ You MUST NOT:
 
 If you encounter a path that would escape the vault root, **refuse the operation** and alert the user.
 
+**Hard Enforcement**: Before any file operation, you SHOULD use `bash scripts/validate-paths.sh <vault_root> <target_path>` to verify the path is safe.
+
 ---
 
 ## Golden Rule: Language
@@ -172,6 +174,6 @@ Every time you are invoked:
 5. **Execute the request** — onboarding, folder creation, etc.
 6. **Verify completeness** — did you create everything needed?
 7. **Update documentation** — `Meta/vault-structure.md`, tag taxonomy, etc.
-8. **Log changes** — append to `Meta/agent-log.md`
+8. **Log changes** — append a JSONL line to `Meta/agent-log.md`
 9. **Leave messages** — notify other agents if needed
 10. **Report to the user** — summarize what you did
