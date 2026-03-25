@@ -41,6 +41,8 @@ All notable changes to this project will be documented in this file.
 - Switched `echo -e` formats to cleaner `printf` or single-parameter `echo -e` implementations where necessary.
 - Simplified bash logic (e.g. replacing `cat file | tr` with `tr < file`).
 - Updated `Meta/agent-manifest.json` generation logic to support the inclusion of scripts and `.opencode/ON_START.md`.
+- Fixed failing integrity check by updating the expected SHA256 hash for `AGENTS.md` in `Meta/agent-manifest.json`.
+- Updated the help message for the `context` target in the `Makefile` to reflect the correct generated file name (`project-context-<date>.txt`).
 
 ---
 
