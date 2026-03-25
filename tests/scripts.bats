@@ -189,3 +189,16 @@ teardown() {
     assert_success
     assert_output --partial "Baseline Accuracy     : 50.00% (1/2)"
 }
+
+@test "benchmark-transcriber.py calculates precision and recall correctly" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/benchmark-transcriber.py" .
+    
+    echo '{"explicit_tasks": ["Buy groceries", "Fix the car"], "implicit_tasks": ["Call mom"]}' > transcriber-answer.json
+    echo '{"extracted_tasks": ["Buy groceries", "Call mom", "Random thought"]}' > transcriber-preds.json
+    
+    run python3 benchmark-transcriber.py transcriber-answer.json transcriber-preds.json
+    assert_success
+    assert_output --partial "Explicit Tasks Captured: 1/2 (50.00%)"
+    assert_output --partial "Hallucinated Tasks     : 1/3 (33.33%)"
+}

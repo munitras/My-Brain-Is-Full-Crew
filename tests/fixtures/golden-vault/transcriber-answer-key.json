@@ -1,0 +1,10 @@
+{
+  "explicit_tasks": [
+    "Review budget by Friday (John)",
+    "Email the client about the delay (Me)",
+    "Update the server certificates before next week"
+  ],
+  "implicit_tasks": [
+    "Consider hiring a new designer"
+  ]
+}

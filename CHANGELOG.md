@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased] — 2026-03-25
 
 ### Added
+- Created `scripts/benchmark-transcriber.py` to evaluate Transcriber extraction performance (TST-403).
+- Added Golden dataset transcript fixture, expected answer key, and mock predictions for Transcriber benchmarking.
 - Created a benchmark evaluation script `scripts/benchmark-sorter.py` and modified `generate-golden-dataset.py` to output a baseline answer key for the Sorter Routing Benchmark (TST-402).
 - Added test coverage in `scripts.bats` to ensure the benchmark script accurately calculates baseline accuracy against mock predictions.
 - Created Golden Dataset vault benchmarking setup with a python generation script (`scripts/generate-golden-dataset.py`) generating 50 pre-categorized test notes (TST-401).
