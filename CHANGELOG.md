@@ -18,6 +18,8 @@ All notable changes to this project will be documented in this file.
 - Vault structure recreation added to `scripts/update-opencode.sh` to handle accidentally missing directories.
 
 ### Changed
+- Enforced Strict YAML Schema on Ingestion (OPT-301) by updating Scribe and Transcriber instructions to mandate standardized YAML frontmatter with a `summary` field.
+- Optimized Sorter Triage Logic (OPT-302) by instructing Sorter to base routing decisions exclusively on frontmatter metadata to conserve tokens.
 - Updated Agent Context Injection (Sorter, Librarian, Architect) to read from new JSON configurations (CTX-203).
 - Updated manifest generation script to include `Meta/vault-structure.json` and `Meta/tag-taxonomy.json`.
 - Modified install and update scripts to handle deploying JSON configurations to the vault.

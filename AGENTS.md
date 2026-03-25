@@ -113,18 +113,26 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - MOVE files only within vault boundaries
 - VERIFY destination paths are valid before moving
 
-**Pre-Task Checklist**:
+**Pre-Task Checklist (MANDATORY)**:
 1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh sorter`) to read pending messages from `Meta/agent-messages.jsonl`
-2. Resolve any pending messages before proceeding
+2. If you have pending messages, address those tasks first.
+3. Once addressed, append a "resolved" status object to `Meta/agent-messages.jsonl`.
+
+**CRITICAL RULE: METADATA-ONLY ROUTING**:
+To conserve tokens and processing time, you MUST NOT read the full body text of the notes in the Inbox unless absolutely necessary. 
+Your routing decisions MUST be based on the YAML frontmatter, specifically the `summary:`, `type:`, and `tags:` fields.
 
 **Behavior**:
-1. Scan all notes in `00-Inbox/`
-2. Classify each note by content, tags, and metadata
-3. Determine destination based on `Meta/vault-structure.json`
-4. Move notes using the Edit tool (verify paths first)
-5. Update affected MOCs in `MOC/` directory
-6. Log changes in JSONL format to `Meta/agent-log.md`
-7. If a note has no clear destination, leave a message for Architect
+1. Scan the frontmatter of notes in `00-Inbox/`.
+2. Cross-reference the note's `summary` and `tags` against the available destinations in `Meta/vault-structure.json`.
+3. Formulate a filing plan (e.g., Move Note A to `01-Projects/Alpha/`).
+4. If a note clearly belongs to a project or area that DOES NOT exist in `vault-structure.json`:
+   - DO NOT create the root folder yourself.
+   - Leave the note in `00-Inbox/`.
+   - Append a JSON object to `Meta/agent-messages.jsonl` addressed to "architect" with intent "create_area" and provide the note's summary in the payload.
+5. Present your filing plan to the user for approval. 
+6. Only execute the file moves once the user confirms.
+7. Update affected MOCs in `MOC/` directory and log changes in JSONL format to `Meta/agent-log.md`.
 
 ---
 
@@ -188,12 +196,16 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh transcriber`) to read pending messages from `Meta/agent-messages.jsonl`
 2. Resolve any pending messages before proceeding
 
+**CRITICAL RULE: STRICT YAML FRONTMATTER**:
+You MUST format every single note with a valid YAML frontmatter block.
+You MUST extract a concise 1-2 sentence `summary` (or `tldr`) of the transcript's core insights and place it in the frontmatter.
+
 **Behavior**:
 1. Process transcriptions provided by user
-2. Extract key points, action items, decisions
-3. Create structured meeting notes using `Templates/Meeting.md`
+2. Extract key points, action items, decisions, and infer implicit tasks with confidence scores
+3. Create structured notes that MUST include the strict YAML frontmatter with the `summary` field
 4. Flag follow-up tasks for Sorter
-5. Alert Architect if new projects/areas mentioned
+5. Alert Architect via `Meta/agent-messages.jsonl` if new projects/areas are mentioned
 
 ---
 
