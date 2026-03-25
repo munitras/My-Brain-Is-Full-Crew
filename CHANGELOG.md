@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Finalized Stream 1 Alpha Core: All tasks verified, documentation and Makefile updated. Project is rollout-ready.
 - Created `scripts/benchmark-connector.py` to evaluate valid wikilinks and dead link rate (TST-404).
 - Added `scripts.bats` test logic to verify Connector integrity script executes accurately.
 - Created `scripts/benchmark-transcriber.py` to evaluate Transcriber extraction performance (TST-403).
