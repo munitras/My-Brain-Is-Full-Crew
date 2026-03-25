@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Updated `.opencode/ON_START.md` to trigger the Foreman task sweep script on startup and advise the user to check the HUD (WRK-603).
+- Added test coverage in `scripts.bats` to ensure `ON_START.md` accurately includes the Foreman sweep execution and HUD notice.
 - Updated `Meta/Dashboard.md` to embed Foreman's output and added a Dataview query to render `#urgent` or tasks due today at the top of the HUD (WRK-602).
 - Added test coverage in `scripts.bats` to ensure Dashboard Dataview queries and embeds exist.
 - Created `scripts/foreman-sweep.sh` to extract open markdown tasks from the vault (WRK-601).

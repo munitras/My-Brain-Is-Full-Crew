@@ -248,3 +248,12 @@ teardown() {
     run grep '!\[\[Foreman-Tasks\]\]' Meta/Dashboard.md
     assert_success
 }
+
+@test "ON_START.md triggers Foreman sweep and advises user to check HUD" {
+    cd "$PROJECT_ROOT"
+    run grep 'bash scripts/foreman-sweep.sh . > Meta/Foreman-Tasks.md' .opencode/ON_START.md
+    assert_success
+    
+    run grep 'Please check the Dashboard HUD for your tasks today' .opencode/ON_START.md
+    assert_success
+}
