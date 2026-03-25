@@ -234,3 +234,17 @@ teardown() {
     assert_output --partial "Dead Links: 1"
     assert_output --partial "Dead Link Rate: 33.33%"
 }
+
+@test "Dashboard.md contains Dataview query for urgent and today tasks" {
+    cd "$PROJECT_ROOT"
+    run grep -A 3 '```dataview' Meta/Dashboard.md
+    assert_success
+    assert_output --partial "TASK"
+    assert_output --partial 'WHERE contains(tags, "#urgent") OR due = date(today) OR contains(text, "📅")'
+}
+
+@test "Dashboard.md contains Foreman-Tasks embed" {
+    cd "$PROJECT_ROOT"
+    run grep '!\[\[Foreman-Tasks\]\]' Meta/Dashboard.md
+    assert_success
+}

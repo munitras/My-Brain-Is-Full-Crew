@@ -1,5 +1,17 @@
 # Agent Observability Dashboard
 
+## Action Center: Urgent & Today
+
+```dataview
+TASK
+WHERE contains(tags, "#urgent") OR due = date(today) OR contains(text, "📅")
+```
+
+## All Open Tasks (Foreman Sweep)
+![[Foreman-Tasks]]
+
+## Agent Queue Status
+
 ```dataviewjs
 // Fetch all files from the queues directory
 const queuesDir = "Meta/queues";
