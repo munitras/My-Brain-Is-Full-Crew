@@ -121,6 +121,16 @@ The **Architect** agent will guide you through onboarding and create your entire
 | *"Weekly review"* | **Librarian** audits broken links, duplicates, health score |
 | *"Find connections for my latest note"* | **Connector** discovers hidden links in your vault |
 
+### 6. Evening Shutdown Macro
+
+To seamlessly trigger the evening wind-down workflow, you can add this alias to your shell profile (`~/.bashrc` or `~/.zshrc`):
+
+```bash
+alias brainsleep="opencode --prompt 'Execute ON_CLOSE.md...'"
+```
+
+Running `brainsleep` will automatically empty your inbox, perform a health check, and ask for a daily reflection to park thoughts for tomorrow.
+
 ---
 
 ## Vault structure

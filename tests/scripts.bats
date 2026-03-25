@@ -291,3 +291,20 @@ teardown() {
     run grep '| "Draft a document" | Synthesizer (subagent) | Task tool with prompt |' AGENTS.md
     assert_success
 }
+
+@test "ON_CLOSE.md triggers Sorter and Librarian, and asks for reflection" {
+    cd "$PROJECT_ROOT"
+    assert [ -f ".opencode/ON_CLOSE.md" ]
+    run grep 'Sorter' .opencode/ON_CLOSE.md
+    assert_success
+    run grep 'Librarian' .opencode/ON_CLOSE.md
+    assert_success
+    run grep 'Any final thoughts to park for tomorrow?' .opencode/ON_CLOSE.md
+    assert_success
+}
+
+@test "README.md contains brainsleep alias" {
+    cd "$PROJECT_ROOT"
+    run grep 'alias brainsleep="opencode --prompt '"'Execute ON_CLOSE.md...'\"" README.md
+    assert_success
+}
