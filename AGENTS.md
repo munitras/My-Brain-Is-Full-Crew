@@ -1,6 +1,6 @@
 # My Brain Is Full Crew — OpenCode Edition
 
-A team of 7 AI agents that manage your Obsidian vault. Talk naturally, they organize everything.
+A team of 8 AI agents that manage your Obsidian vault. Talk naturally, they organize everything.
 
 ---
 
@@ -29,7 +29,7 @@ When the vault is opened or the system initializes, check if `.opencode/ON_START
 
 ## ROUTING RULES — MANDATORY
 
-**Your 7 agents are available. When a user message matches an agent's domain, delegate immediately using the Task tool with `subagent_type`.**
+**Your 8 agents are available. When a user message matches an agent's domain, delegate immediately using the Task tool with `subagent_type`.**
 
 ### Priority Routing
 
@@ -38,18 +38,19 @@ When the vault is opened or the system initializes, check if `.opencode/ON_START
 | 1 | transcriber | In-Context | Audio, recordings, transcriptions, meetings |
 | 2 | scribe | Subagent | Text capture, notes, ideas, thoughts, to-dos |
 | 3 | seeker | Subagent | Vault search, "find", "where did I put", questions about notes |
-| 4 | architect | Subagent | Vault structure, areas, templates, MOCs, onboarding, defrag |
-| 5 | sorter | In-Context | Inbox triage, filing, note sorting |
-| 6 | connector | In-Context | Links between notes, graph, relationships, cross-linking |
-| 7 | librarian | In-Context | Maintenance, duplicates, broken links, audit, cleanup |
+| 4 | reader | Subagent | Web articles, links, URLs, external research |
+| 5 | architect | Subagent | Vault structure, areas, templates, MOCs, onboarding, defrag |
+| 6 | sorter | In-Context | Inbox triage, filing, note sorting |
+| 7 | connector | In-Context | Links between notes, graph, relationships, cross-linking |
+| 8 | librarian | In-Context | Maintenance, duplicates, broken links, audit, cleanup |
 
 ### Subagent Agents (Use Task Tool)
 
-For **architect**, **seeker**, and **scribe**, use the Task tool:
+For **architect**, **seeker**, **scribe**, and **reader**, use the Task tool:
 
 ```
 Task tool with:
-- subagent_type: "architect" | "seeker" | "scribe"
+- subagent_type: "architect" | "seeker" | "scribe" | "reader"
 - description: Brief task description
 - prompt: User's full request + context
 ```
@@ -209,6 +210,20 @@ You MUST extract a concise 1-2 sentence `summary` (or `tldr`) of the transcript'
 
 ---
 
+### 8. READER (Subagent)
+
+**Role**: Web Ingestion & Synthesis
+**Triggers**: "Read this link", "Summarize this article", "capture this url", raw URLs
+
+**Security Constraints**:
+- WRITE only to `00-Inbox/`
+- NEVER execute bash commands
+- FETCH explicitly ignoring boilerplate/ads
+
+Use subagent_type: `reader` for web scraping and article synthesis.
+
+---
+
 ## Co-activation Rules
 
 When multiple agents are needed:
@@ -284,6 +299,7 @@ Meta/              ← Config, logs, agent messages
 | "Connect related notes" | Connector | Process directly |
 | "Weekly review" | Librarian | Process directly |
 | "Transcribe meeting" | Transcriber | Process directly |
+| "Read this link" | Reader (subagent) | Task tool with prompt |
 
 ---
 

@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Created `.opencode/agents/reader.md` defining the Reader subagent, configured with `webfetch: allow` and instructions for formatting summaries (WRK-701, WRK-702).
+- Updated `AGENTS.md` to include Reader in the dispatcher routing rules and priority table (WRK-703).
+- Added tests in `scripts.bats` to verify Reader subagent routing and configuration.
 - Updated `.opencode/ON_START.md` to trigger the Foreman task sweep script on startup and advise the user to check the HUD (WRK-603).
 - Added test coverage in `scripts.bats` to ensure `ON_START.md` accurately includes the Foreman sweep execution and HUD notice.
 - Updated `Meta/Dashboard.md` to embed Foreman's output and added a Dataview query to render `#urgent` or tasks due today at the top of the HUD (WRK-602).

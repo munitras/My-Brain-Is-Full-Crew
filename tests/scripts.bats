@@ -257,3 +257,18 @@ teardown() {
     run grep 'Please check the Dashboard HUD for your tasks today' .opencode/ON_START.md
     assert_success
 }
+
+@test "AGENTS.md routes 'Read this link' to reader subagent" {
+    cd "$PROJECT_ROOT"
+    run grep '| "Read this link" | Reader (subagent) | Task tool with prompt |' AGENTS.md
+    assert_success
+}
+
+@test ".opencode/agents/reader.md exists and is configured as a subagent" {
+    cd "$PROJECT_ROOT"
+    assert [ -f ".opencode/agents/reader.md" ]
+    run grep 'mode: subagent' .opencode/agents/reader.md
+    assert_success
+    run grep 'webfetch: allow' .opencode/agents/reader.md
+    assert_success
+}
