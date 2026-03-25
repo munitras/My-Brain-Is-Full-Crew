@@ -4,7 +4,7 @@
   },
   "01-Projects": {
     "description": "Active projects with deadlines",
-    "subfolders": ["Alpha", "Beta", "Consulting", "Rebrand"]
+    "subfolders": ["Alpha", "Beta", "Consulting", "Rebrand", "Drafts"]
   },
   "02-Areas": {
     "description": "Ongoing responsibilities without end dates",

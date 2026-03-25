@@ -272,3 +272,22 @@ teardown() {
     run grep 'webfetch: allow' .opencode/agents/reader.md
     assert_success
 }
+
+@test ".opencode/agents/synthesizer.md exists and is configured as a subagent" {
+    cd "$PROJECT_ROOT"
+    assert [ -f ".opencode/agents/synthesizer.md" ]
+    run grep 'mode: subagent' .opencode/agents/synthesizer.md
+    assert_success
+}
+
+@test "Meta/vault-structure.json contains Drafts folder in 01-Projects" {
+    cd "$PROJECT_ROOT"
+    run jq -e '.["01-Projects"].subfolders | index("Drafts")' Meta/vault-structure.json
+    assert_success
+}
+
+@test "AGENTS.md routes 'Draft a document' to synthesizer subagent" {
+    cd "$PROJECT_ROOT"
+    run grep '| "Draft a document" | Synthesizer (subagent) | Task tool with prompt |' AGENTS.md
+    assert_success
+}
