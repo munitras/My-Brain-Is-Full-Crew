@@ -10,10 +10,10 @@ set -eo pipefail
 
 # ── Colors ──────────────────────────────────────────────────────────────────
 if [[ -t 1 ]]; then
-  GREEN='\033[0;32m'; CYAN='\033[0;36m'; YELLOW='\033[1;33m'
+  GREEN='\033[0;32m'; CYAN='\033[0;36m'
   RED='\033[0;31m'; BOLD='\033[1m'; DIM='\033[2m'; NC='\033[0m'
 else
-  GREEN=''; CYAN=''; YELLOW=''; RED=''; BOLD=''; DIM=''; NC=''
+  GREEN=''; CYAN=''; RED=''; BOLD=''; DIM=''; NC=''
 fi
 
 info()    { echo -e "   ${CYAN}>${NC} $*"; }
@@ -35,17 +35,17 @@ FILES=()
 
 # 2. Agent definitions
 while IFS= read -r -d '' f; do
-  FILES+=("${f#$REPO_DIR/}")
+  FILES+=("${f#"$REPO_DIR"/}")
 done < <(find "${REPO_DIR}/.opencode/agents" -name "*.md" -print0 2>/dev/null)
 
 # 3. Reference documents
 while IFS= read -r -d '' f; do
-  FILES+=("${f#$REPO_DIR/}")
+  FILES+=("${f#"$REPO_DIR"/}")
 done < <(find "${REPO_DIR}/.opencode/references" -name "*.md" -print0 2>/dev/null)
 
 # 4. Documentation
 while IFS= read -r -d '' f; do
-  FILES+=("${f#$REPO_DIR/}")
+  FILES+=("${f#"$REPO_DIR"/}")
 done < <(find "${REPO_DIR}/docs" -name "*.md" -print0 2>/dev/null)
 
 # 5. Root level MD files (excluding ones we might have already added or temporary ones)
@@ -53,7 +53,7 @@ while IFS= read -r -d '' f; do
   fname=$(basename "$f")
   # Filter out some files we might not want or are duplicates
   if [[ "$fname" != "AGENTS.md" && "$fname" != "tasks-bugs.md" && "$fname" != ".junie-analysis"* ]]; then
-      FILES+=("${f#$REPO_DIR/}")
+      FILES+=("${f#"$REPO_DIR"/}")
   fi
 done < <(find "${REPO_DIR}" -maxdepth 1 -name "*.md" -print0)
 

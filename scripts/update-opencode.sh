@@ -34,7 +34,7 @@ REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 # Priority: 1) Stored path from install, 2) Parent directory (legacy assumption)
 VAULT_DIR=""
 if [[ -f "$REPO_DIR/.mbifc-vault-path" ]]; then
-  VAULT_DIR=$(cat "$REPO_DIR/.mbifc-vault-path" | tr -d '\n')
+  VAULT_DIR=$(tr -d '\n' < "$REPO_DIR/.mbifc-vault-path")
   if [[ ! -d "$VAULT_DIR" ]]; then
     warn "Stored vault path no longer exists: $VAULT_DIR"
     VAULT_DIR=""
@@ -119,6 +119,13 @@ if [[ ! -d "$VAULT_DIR/.opencode/agents" ]]; then
 fi
 
 # ── Update agents ───────────────────────────────────────────────────────────
+info "Ensuring vault structure..."
+for dir in "00-Inbox" "01-Projects" "02-Areas" "03-Resources" "04-Archive" "05-People" "06-Meetings" "07-Daily" "MOC" "Templates" "Meta"; do
+  mkdir -p "$VAULT_DIR/$dir"
+done
+mkdir -p "$VAULT_DIR/Meta/health-reports"
+mkdir -p "$VAULT_DIR/Meta/agent-message-archive"
+
 AGENT_COUNT=0
 for agent in "$REPO_DIR/.opencode/agents/"*.md; do
   if [[ -f "$agent" ]]; then
@@ -161,9 +168,33 @@ if [[ -f "$REPO_DIR/AGENTS.md" ]]; then
   fi
 fi
 
+# ── Update ON_START.md ────────────────────────────────────────────────────────
+ON_START_UPDATED=""
+if [[ -f "$REPO_DIR/.opencode/ON_START.md" ]]; then
+  if [[ ! -f "$VAULT_DIR/.opencode/ON_START.md" ]] || ! diff -q "$REPO_DIR/.opencode/ON_START.md" "$VAULT_DIR/.opencode/ON_START.md" >/dev/null 2>&1; then
+    cp "$REPO_DIR/.opencode/ON_START.md" "$VAULT_DIR/.opencode/"
+    info "Updated ON_START.md"
+    ON_START_UPDATED="1"
+  fi
+fi
+
+# ── Update scripts ────────────────────────────────────────────────────────────
+SCRIPTS_UPDATED=""
+mkdir -p "$VAULT_DIR/scripts"
+for script in "$REPO_DIR/scripts/"*.sh; do
+  if [[ -f "$script" ]]; then
+    name="$(basename "$script")"
+    if [[ ! -f "$VAULT_DIR/scripts/$name" ]] || ! diff -q "$script" "$VAULT_DIR/scripts/$name" >/dev/null 2>&1; then
+      cp "$script" "$VAULT_DIR/scripts/"
+      info "Updated script: $name"
+      SCRIPTS_UPDATED="1"
+    fi
+  fi
+done
+
 # ── Summary ─────────────────────────────────────────────────────────────────
 echo ""
-if [[ $AGENT_COUNT -eq 0 && $REF_COUNT -eq 0 && -z "$AGENTS_MD_UPDATED" ]]; then
+if [[ $AGENT_COUNT -eq 0 && $REF_COUNT -eq 0 && -z "$AGENTS_MD_UPDATED" && -z "$ON_START_UPDATED" && -z "$SCRIPTS_UPDATED" ]]; then
   success "Everything is already up to date!"
 else
   success "Updated $AGENT_COUNT agent(s), $REF_COUNT reference(s)"

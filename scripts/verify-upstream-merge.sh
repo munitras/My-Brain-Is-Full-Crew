@@ -88,7 +88,9 @@ done
 EXEC_CHANGES=$(git diff upstream..fork-from/main --name-only | grep -E 'scripts/.*\.sh$' || true)
 if [[ -n "$EXEC_CHANGES" ]]; then
   echo -e "   ${YELLOW}! Script changes detected:${NC}"
-  echo "$EXEC_CHANGES" | sed 's/^/     /'
+  while IFS= read -r script; do
+    echo "     $script"
+  done <<< "$EXEC_CHANGES"
   WARNINGS=$((WARNINGS + 1))
 fi
 

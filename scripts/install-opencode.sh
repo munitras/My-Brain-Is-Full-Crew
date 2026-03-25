@@ -135,7 +135,8 @@ success "Copied $AGENT_COUNT agent definitions"
 echo ""
 info "Copying AGENTS.md..."
 cp "$REPO_DIR/AGENTS.md" "$VAULT_DIR/"
-success "Copied AGENTS.md"
+[[ -f "$REPO_DIR/.opencode/ON_START.md" ]] && cp "$REPO_DIR/.opencode/ON_START.md" "$VAULT_DIR/.opencode/"
+success "Copied AGENTS.md and ON_START.md"
 
 # ── Copy references ────────────────────────────────────────────────────────
 echo ""
@@ -143,6 +144,17 @@ info "Copying references..."
 mkdir -p "$VAULT_DIR/.opencode/references"
 cp "$REPO_DIR/.opencode/references/"*.md "$VAULT_DIR/.opencode/references/"
 success "Copied references"
+
+# ── Copy scripts ───────────────────────────────────────────────────────────
+echo ""
+info "Copying scripts..."
+mkdir -p "$VAULT_DIR/scripts"
+for script in "$REPO_DIR/scripts/"*.sh; do
+  if [[ -f "$script" ]]; then
+    cp "$script" "$VAULT_DIR/scripts/"
+  fi
+done
+success "Copied scripts"
 
 # ── Create initial Meta files ──────────────────────────────────────────────
 echo ""
@@ -203,6 +215,7 @@ echo -e "   │   ├── agents/          ${DIM}← ${AGENT_COUNT} agent defi
 echo -e "   │   └── references/      ${DIM}← shared documentation${NC}"
 echo -e "   ├── AGENTS.md            ${DIM}← dispatcher instructions${NC}"
 echo -e "   ├── Meta/                 ${DIM}← logs, messages, config${NC}"
+echo -e "   ├── scripts/              ${DIM}← utility scripts${NC}"
 echo -e "   └── [vault folders]      ${DIM}← 00-Inbox, 01-Projects, etc.${NC}"
 echo ""
 echo -e "   ${BOLD}Next steps:${NC}"

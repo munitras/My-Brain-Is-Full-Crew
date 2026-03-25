@@ -114,8 +114,8 @@ if [[ $MISSING -gt 0 ]]; then
   exit 3
 fi
 
-if [[ $VERIFIED -eq $TOTAL && $TOTAL -gt 0 ]]; then
-  echo -e "${GREEN}${BOLD}   ✓ All $VERIFIED files verified${NC}"
+  if [[ $VERIFIED -eq $TOTAL && $TOTAL -gt 0 ]]; then
+  success "All $VERIFIED files verified"
   exit 0
 fi
 

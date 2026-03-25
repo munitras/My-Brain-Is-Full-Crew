@@ -43,12 +43,15 @@ FILES=()
 
 # OpenCode agents
 for f in "$REPO_DIR/.opencode/agents/"*.md; do
-  [[ -f "$f" ]] && FILES+=("${f#$REPO_DIR/}")
+  [[ -f "$f" ]] && FILES+=("${f#"$REPO_DIR"/}")
 done
+
+# Startup instructions
+[[ -f "$REPO_DIR/.opencode/ON_START.md" ]] && FILES+=(".opencode/ON_START.md")
 
 # OpenCode references
 for f in "$REPO_DIR/.opencode/references/"*.md; do
-  [[ -f "$f" ]] && FILES+=("${f#$REPO_DIR/}")
+  [[ -f "$f" ]] && FILES+=("${f#"$REPO_DIR"/}")
 done
 
 # AGENTS.md
@@ -96,5 +99,5 @@ done
 # Summary
 printf "\n"
 success "Manifest generated: Meta/agent-manifest.json"
-printf "   ${DIM}Run this after any changes to agent or reference files${NC}\n"
-printf "   ${DIM}Verify with: bash scripts/verify-integrity.sh${NC}\n"
+printf "   %bRun this after any changes to agent or reference files%b\n" "${DIM}" "${NC}"
+printf "   %bVerify with: bash scripts/verify-integrity.sh%b\n" "${DIM}" "${NC}"

@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased] — 2026-03-25
+
+### Added
+- `.opencode/ON_START.md` file deployment support during installation and updates.
+- Automatically copy `scripts/` directory utilities (`validate-paths.sh`, `verify-integrity.sh`, etc.) to the target vault environment.
+- Vault structure recreation added to `scripts/update-opencode.sh` to handle accidentally missing directories.
+
+### Changed
+- Fixed ShellCheck warnings (SC2034, SC2317, SC2001) across `scripts/*.sh` to improve bash compliance.
+- Switched `echo -e` formats to cleaner `printf` or single-parameter `echo -e` implementations where necessary.
+- Simplified bash logic (e.g. replacing `cat file | tr` with `tr < file`).
+- Updated `Meta/agent-manifest.json` generation logic to support the inclusion of scripts and `.opencode/ON_START.md`.
+
+---
+
 ## [Unreleased] — 2026-03-24
 
 ### Fixed
