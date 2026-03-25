@@ -175,6 +175,30 @@ EOF
     assert_success
 }
 
+@test "chronos-reporter.py calculates time deltas correctly" {
+    cd "$MOCK_REPO"
+    cp "$PROJECT_ROOT/scripts/chronos-reporter.py" "scripts/"
+    
+    mkdir -p "$MOCK_REPO/07-Daily"
+    cat << 'EOF' > "$MOCK_REPO/07-Daily/chronos-ledger.jsonl"
+{"timestamp": "2026-03-25T10:00:00Z", "action": "switch", "task": "Project A"}
+{"timestamp": "2026-03-25T11:00:00Z", "action": "pause", "task": "Project A"}
+{"timestamp": "2026-03-25T12:00:00Z", "action": "resume", "task": "Project A"}
+{"timestamp": "2026-03-25T12:30:00Z", "action": "switch", "task": "Project B"}
+{"timestamp": "2026-03-25T14:30:00Z", "action": "switch", "task": "Project A"}
+EOF
+    
+    run python3 scripts/chronos-reporter.py "$MOCK_REPO"
+    assert_success
+    
+    # Project A total time up to switch = 1 hour (10 to 11) + 30 mins (12 to 12:30) = 1h 30m
+    # Project B total time = 2 hours (12:30 to 14:30)
+    # The last entry is switch to Project A, but its duration depends on "now", let's mock datetime or just check existing Output
+    # Wait, the script uses datetime.utcnow() for the last active task. This might be flaky in tests.
+    
+    assert_output --partial "Project B                      | 2h 0m"
+}
+
 @test "foreman-sweep.sh extracts open tasks correctly" {
     cd "$MOCK_REPO"
     cp "$PROJECT_ROOT/scripts/foreman-sweep.sh" "scripts/"

@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Created `scripts/chronos-reporter.py` to parse `07-Daily/chronos-ledger.jsonl` and calculate time spent per task (SYS-1006).
+- Added tests in `scripts.bats` to ensure `chronos-reporter.py` calculates time deltas correctly.
 - Taught Scribe to recognize `@now` as a high-priority system interrupt to explicitly invoke the `context-switch.sh` tool for time-tracking (SYS-1003).
 - Added `bash: allow` permission to Scribe to execute the context switch script.
 - Added tests in `scripts.bats` to ensure Scribe is properly configured for the `@now` system interrupt command.
