@@ -120,7 +120,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 **Behavior**:
 1. Scan all notes in `00-Inbox/`
 2. Classify each note by content, tags, and metadata
-3. Determine destination based on `Meta/vault-structure.md`
+3. Determine destination based on `Meta/vault-structure.json`
 4. Move notes using the Edit tool (verify paths first)
 5. Update affected MOCs in `MOC/` directory
 6. Log changes in JSONL format to `Meta/agent-log.md`
@@ -169,7 +169,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 2. Check for duplicate content
 3. Verify all wikilinks resolve
 4. Validate frontmatter consistency
-5. Check tag usage against `Meta/tag-taxonomy.md`
+5. Check tag usage against `Meta/tag-taxonomy.json`
 6. Generate health report in `Meta/health-reports/`
 7. Set status of processed messages to "resolved" in `Meta/agent-messages.jsonl`
 

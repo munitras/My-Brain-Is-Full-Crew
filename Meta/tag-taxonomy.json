@@ -1,0 +1,26 @@
+[
+  {
+    "canonical_tag": "#meeting",
+    "aliases": ["#meetings", "#call", "#sync"],
+    "category": "type",
+    "description": "Applies to all generated meeting notes."
+  },
+  {
+    "canonical_tag": "#action-item",
+    "aliases": ["#task", "#todo", "#action"],
+    "category": "status",
+    "description": "Notes containing uncompleted tasks."
+  },
+  {
+    "canonical_tag": "#machine-learning",
+    "aliases": ["#ml", "#ai", "#artificial-intelligence"],
+    "category": "topic",
+    "description": "Technical concepts related to AI."
+  },
+  {
+    "canonical_tag": "#urgent",
+    "aliases": ["#critical", "#asap"],
+    "category": "priority",
+    "description": "Requires attention within 24-48 hours."
+  }
+]

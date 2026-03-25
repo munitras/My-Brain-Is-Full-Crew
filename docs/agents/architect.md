@@ -74,7 +74,7 @@ Let's start with the basics. What should I call you?
 - A project index note using the Project template
 - An entry in the Projects MOC
 
-I will also update `Meta/vault-structure.md` and notify the Sorter that a new filing destination exists.
+I will also update `Meta/vault-structure.json` and notify the Sorter that a new filing destination exists.
 
 Shall I proceed?
 

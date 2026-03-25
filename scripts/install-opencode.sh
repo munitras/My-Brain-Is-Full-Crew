@@ -163,6 +163,16 @@ info "Creating initial Meta files..."
 # Store install location for update script
 echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
 
+if [[ -f "$REPO_DIR/Meta/vault-structure.json" && ! -f "$VAULT_DIR/Meta/vault-structure.json" ]]; then
+  cp "$REPO_DIR/Meta/vault-structure.json" "$VAULT_DIR/Meta/vault-structure.json"
+  success "Copied Meta/vault-structure.json"
+fi
+
+if [[ -f "$REPO_DIR/Meta/tag-taxonomy.json" && ! -f "$VAULT_DIR/Meta/tag-taxonomy.json" ]]; then
+  cp "$REPO_DIR/Meta/tag-taxonomy.json" "$VAULT_DIR/Meta/tag-taxonomy.json"
+  success "Copied Meta/tag-taxonomy.json"
+fi
+
 if [[ ! -f "$VAULT_DIR/Meta/agent-messages.jsonl" ]]; then
   echo '{"timestamp": "2026-03-25T08:00:00Z", "from": "system", "to": "architect", "status": "resolved", "intent": "initialize_bus", "payload": {"status": "online"}, "resolution": "JSONL bus initialized successfully."}' > "$VAULT_DIR/Meta/agent-messages.jsonl"
   success "Created Meta/agent-messages.jsonl"

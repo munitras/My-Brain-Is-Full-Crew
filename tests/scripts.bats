@@ -146,3 +146,13 @@ teardown() {
     assert_failure
     assert_output '{"error": "Agent name parameter is required."}'
 }
+
+@test "Meta/vault-structure.json is valid JSON" {
+    run jq empty "$PROJECT_ROOT/Meta/vault-structure.json"
+    assert_success
+}
+
+@test "Meta/tag-taxonomy.json is valid JSON" {
+    run jq empty "$PROJECT_ROOT/Meta/tag-taxonomy.json"
+    assert_success
+}

@@ -192,9 +192,21 @@ for script in "$REPO_DIR/scripts/"*.sh; do
   fi
 done
 
+# ── Update Meta Configs ───────────────────────────────────────────────────────
+META_CONFIG_UPDATED=""
+for config in "vault-structure.json" "tag-taxonomy.json"; do
+  if [[ -f "$REPO_DIR/Meta/$config" ]]; then
+    if [[ ! -f "$VAULT_DIR/Meta/$config" ]] || ! diff -q "$REPO_DIR/Meta/$config" "$VAULT_DIR/Meta/$config" >/dev/null 2>&1; then
+      cp "$REPO_DIR/Meta/$config" "$VAULT_DIR/Meta/"
+      info "Updated Meta config: $config"
+      META_CONFIG_UPDATED="1"
+    fi
+  fi
+done
+
 # ── Summary ─────────────────────────────────────────────────────────────────
 echo ""
-if [[ $AGENT_COUNT -eq 0 && $REF_COUNT -eq 0 && -z "$AGENTS_MD_UPDATED" && -z "$ON_START_UPDATED" && -z "$SCRIPTS_UPDATED" ]]; then
+if [[ $AGENT_COUNT -eq 0 && $REF_COUNT -eq 0 && -z "$AGENTS_MD_UPDATED" && -z "$ON_START_UPDATED" && -z "$SCRIPTS_UPDATED" && -z "$META_CONFIG_UPDATED" ]]; then
   success "Everything is already up to date!"
 else
   success "Updated $AGENT_COUNT agent(s), $REF_COUNT reference(s)"

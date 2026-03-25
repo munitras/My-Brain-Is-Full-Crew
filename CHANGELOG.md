@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased] — 2026-03-25
 
 ### Added
+- Converted `vault-structure.md` and `tag-taxonomy.md` to JSON configurations (CTX-201, CTX-202).
+- Tests in `scripts.bats` to ensure `vault-structure.json` and `tag-taxonomy.json` are valid JSON.
 - Built Dataview Observability Dashboard at `Meta/Dashboard.md` (SYS-105).
 - Added unit tests for `poll-queue.sh` in `tests/scripts.bats`.
 - JSONL Schema for Message Queue (`Meta/schemas/message-schema.json`).
@@ -16,6 +18,9 @@ All notable changes to this project will be documented in this file.
 - Vault structure recreation added to `scripts/update-opencode.sh` to handle accidentally missing directories.
 
 ### Changed
+- Updated Agent Context Injection (Sorter, Librarian, Architect) to read from new JSON configurations (CTX-203).
+- Updated manifest generation script to include `Meta/vault-structure.json` and `Meta/tag-taxonomy.json`.
+- Modified install and update scripts to handle deploying JSON configurations to the vault.
 - Updated `AGENTS.md` pre-task checklists for Sorter, Connector, Librarian, and Transcriber to invoke the `check_messages` tool and read from JSONL instead of markdown (SYS-103).
 - Updated `AGENTS.md` and `CONTRIBUTING.md` Inter-Agent Messaging sections to specify strict JSON schema usage (SYS-104).
 - Updated `scripts/install-opencode.sh` to initialize `.jsonl` message bus instead of `.md` format.

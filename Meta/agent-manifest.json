@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-03-25T06:51:26Z",
+  "generated": "2026-03-25T07:01:23Z",
   "files": {
     ".opencode/agents/architect.md": "4eab2c84454187f21c05f1948ca5f484460ce897de8e8bf148a3fc6c35c3a194",
     ".opencode/agents/scribe.md": "c40589c03d19710ce7c5698de93670c4c9be98c04549bc323eea840e0a888c6c",
@@ -8,8 +8,10 @@
     ".opencode/ON_START.md": "b5780c9ad5dff9c53dd072d338c85a602d21ee959cc1f8ad2d82a3c80787f370",
     ".opencode/references/agents.md": "41e8709199c2bcca204a540c420be38f967d5e098ef908fc8cf5acd73d6d17ab",
     ".opencode/references/inter-agent-messaging.md": "44c70738699c66d6c5eed3eb8c3f2b7aada34d08708cbc9d6da9c7cb2a5b16e8",
-    "AGENTS.md": "deebf6af5899a7252620fd12d52a61ea20e1500a77e2380bc7d26dde0ddf6c10",
+    "AGENTS.md": "243275f93857e43625912e9b0c9a0900ff70356205d90ce19552db76282e31fd",
     "scripts/validate-paths.sh": "11531f9d4040e9abe6985a5c422957c36e676a932f65f390018c8844248b8c24",
-    "scripts/generate-context.sh": "4d907a79873938ec69ad41c34ad827c286acca43cd468f693f9dc76221bb4400"
+    "scripts/generate-context.sh": "4d907a79873938ec69ad41c34ad827c286acca43cd468f693f9dc76221bb4400",
+    "Meta/vault-structure.json": "e2ed5466f4f22c16ac2f5d1688fd73adc32a32c579161e273c6808b07223e662",
+    "Meta/tag-taxonomy.json": "86261666b9bf89969aabef0a5ffdec082b4f54b852a99b8bd5c607d3b12e819b"
   }
 }

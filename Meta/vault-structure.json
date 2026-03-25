@@ -1,0 +1,40 @@
+{
+  "00-Inbox": {
+    "description": "Capture everything here"
+  },
+  "01-Projects": {
+    "description": "Active projects with deadlines",
+    "subfolders": ["Alpha", "Beta", "Consulting", "Rebrand"]
+  },
+  "02-Areas": {
+    "description": "Ongoing responsibilities without end dates",
+    "subfolders": ["Sales", "Health", "Finance", "Learning"]
+  },
+  "03-Resources": {
+    "description": "Reference material and inputs",
+    "subfolders": ["Quotes", "Articles", "Podcasts"]
+  },
+  "04-Archive": {
+    "description": "Completed or historical notes",
+    "subfolders": ["2024", "2025", "2026"]
+  },
+  "05-People": {
+    "description": "Personal CRM and contacts"
+  },
+  "06-Meetings": {
+    "description": "Meeting notes chronologically",
+    "subfolders": ["2026/01", "2026/02", "2026/03"]
+  },
+  "07-Daily": {
+    "description": "Daily notes and journal entries"
+  },
+  "MOC": {
+    "description": "Maps of Content indexes"
+  },
+  "Templates": {
+    "description": "Note templates for Scribe and Transcriber"
+  },
+  "Meta": {
+    "description": "Configuration, logs, and system files"
+  }
+}
