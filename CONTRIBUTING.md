@@ -118,7 +118,7 @@ Defined directly in `AGENTS.md` with inline instructions. No separate file neede
 
 ## Inter-agent coordination
 
-Agents coordinate through the `AGENTS.md` dispatcher and `Meta/agent-messages.jsonl`. When an agent detects work for another agent, it includes a `### Suggested next agent` section in its output or leaves a message in the message board using JSONL format. See `.opencode/references/inter-agent-messaging.md` for the protocol.
+Agents coordinate through the `AGENTS.md` dispatcher and distributed outboxes in `Meta/queues/`. When an agent detects work for another agent, it includes a `### Suggested next agent` section in its output or leaves a message in the message board using JSONL format. See `.opencode/references/inter-agent-messaging.md` for the protocol.
 
 ---
 

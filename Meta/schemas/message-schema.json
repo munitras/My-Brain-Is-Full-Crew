@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Inter-Agent Message",
+  "title": "Inter-Agent Event",
   "type": "object",
   "properties": {
     "timestamp": {
@@ -30,8 +30,23 @@
     },
     "resolution": {
       "type": "string",
-      "description": "Required ONLY when status is 'resolved'. Describes the outcome."
+      "description": "Optional description of the outcome."
+    },
+    "message_id": {
+      "type": "string",
+      "description": "Unique identifier for the request message."
+    },
+    "resolves_id": {
+      "type": "string",
+      "description": "Reference to the message_id that this event resolves."
     }
   },
-  "required": ["timestamp", "from", "to", "status", "intent", "payload"]
+  "oneOf": [
+    {
+      "required": ["message_id", "timestamp", "from", "to", "status", "intent", "payload"]
+    },
+    {
+      "required": ["resolves_id", "status"]
+    }
+  ]
 }

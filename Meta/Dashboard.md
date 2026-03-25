@@ -1,16 +1,39 @@
 # Agent Observability Dashboard
 
 ```dataviewjs
-// Fetch the raw JSONL file
-const rawData = await app.vault.adapter.read("Meta/agent-messages.jsonl");
+// Fetch all files from the queues directory
+const queuesDir = "Meta/queues";
+let outboxFiles = [];
+try {
+    const files = await app.vault.adapter.list(queuesDir);
+    outboxFiles = files.files.filter(f => f.endsWith("-outbox.jsonl"));
+} catch (e) {
+    // Directory might not exist yet
+}
 
-// Split by line, filter out empty lines, and parse JSON
-const messages = rawData.split('\n')
-    .filter(line => line.trim().length > 0)
-    .map(line => JSON.parse(line));
+let allMessages = [];
 
-// Filter for pending messages to keep the dashboard clean
-const pendingMessages = messages.filter(m => m.status === "pending");
+for (const file of outboxFiles) {
+    const rawData = await app.vault.adapter.read(file);
+    const messages = rawData.split('\n')
+        .filter(line => line.trim().length > 0)
+        .map(line => JSON.parse(line));
+    allMessages.push(...messages);
+}
+
+// Find all resolved IDs
+const resolvedIds = new Set(
+    allMessages
+        .filter(m => m.resolves_id)
+        .map(m => m.resolves_id)
+);
+
+// Filter for pending messages that haven't been resolved
+const pendingMessages = allMessages.filter(m => 
+    m.status === "pending" && 
+    m.message_id && 
+    !resolvedIds.has(m.message_id)
+);
 
 // Render the table
 dv.table(

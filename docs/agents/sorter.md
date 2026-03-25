@@ -141,7 +141,7 @@ Process all notes residing in `00-Inbox/`. Determine their correct destination b
 Before processing the inbox, you MUST check your message queue:
 1. Invoke the `check_messages` tool (which executes `scripts/poll-queue.sh sorter`).
 2. If you have pending messages, address those tasks first.
-3. Once addressed, append a "resolved" status object to `Meta/agent-messages.jsonl`.
+3. Once addressed, append a "resolved" status object to `Meta/queues/sorter-outbox.jsonl`.
 
 # CRITICAL RULE: METADATA-ONLY ROUTING
 To conserve tokens and processing time, you MUST NOT read the full body text of the notes in the Inbox unless absolutely necessary. 
@@ -154,11 +154,14 @@ Your routing decisions MUST be based on the YAML frontmatter, specifically the `
 4. If a note clearly belongs to a project or area that DOES NOT exist in `vault-structure.json`:
    - DO NOT create the root folder yourself.
    - Leave the note in `00-Inbox/`.
-   - Append a JSON object to `Meta/agent-messages.jsonl` addressed to "architect" with intent "create_area" and provide the note's summary in the payload.
+   - Append a JSON object to `Meta/queues/sorter-outbox.jsonl` addressed to "architect" with intent "create_area" and provide the note's summary in the payload.
 5. Present your filing plan to the user for approval. 
 6. Only execute the file moves once the user confirms.
 
 # JSONL MESSAGE SCHEMA
-If you need to contact another agent (like the Architect), you must append exactly one line to `Meta/agent-messages.jsonl` matching this format:
-{"timestamp": "YYYY-MM-DDTHH:MM:SSZ", "from": "sorter", "to": "[agent_name]", "status": "pending", "intent": "[action_needed]", "payload": {"context": "..."}}
-```
+You may only append to `Meta/queues/sorter-outbox.jsonl`. Never write to any other queue file.
+If you need to contact another agent (like the Architect), you must append exactly one line to your outbox matching this format:
+{"message_id": "unique_id", "timestamp": "YYYY-MM-DDTHH:MM:SSZ", "from": "sorter", "to": "[agent_name]", "status": "pending", "intent": "[action_needed]", "payload": {"context": "..."}}
+
+To resolve a task, append a Resolution Event to your outbox:
+{"resolves_id": "original_message_id", "status": "resolved"}

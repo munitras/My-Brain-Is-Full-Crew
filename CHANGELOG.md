@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Implemented Lock-Free CQRS Message Bus (Epic 5) with distributed agent outboxes in `Meta/queues/`.
+- Modified `poll-queue.sh` to act as a CQRS Projection Engine, dynamically resolving pending tasks without locks.
+- Updated `Meta/schemas/message-schema.json` to enforce `message_id` on requests and `resolves_id` on Resolution Events.
 - Finalized Stream 1 Alpha Core: All tasks verified, documentation and Makefile updated. Project is rollout-ready.
 - Created `scripts/benchmark-connector.py` to evaluate valid wikilinks and dead link rate (TST-404).
 - Added `scripts.bats` test logic to verify Connector integrity script executes accurately.

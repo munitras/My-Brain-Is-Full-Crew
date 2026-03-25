@@ -112,11 +112,11 @@ teardown() {
 }
 
 @test "poll-queue.sh filters pending messages for specific agent" {
-    mkdir -p "$TEST_DIR/Meta"
-    QUEUE_FILE="$TEST_DIR/Meta/agent-messages.jsonl"
-    echo '{"timestamp": "2026-03-25T08:00:00Z", "from": "system", "to": "architect", "status": "resolved", "intent": "initialize_bus", "payload": {"status": "online"}}' > "$QUEUE_FILE"
-    echo '{"timestamp": "2026-03-25T08:05:00Z", "from": "architect", "to": "sorter", "status": "pending", "intent": "file_note", "payload": {"note": "test.md"}}' >> "$QUEUE_FILE"
-    echo '{"timestamp": "2026-03-25T08:10:00Z", "from": "architect", "to": "sorter", "status": "resolved", "intent": "file_note", "payload": {"note": "test2.md"}}' >> "$QUEUE_FILE"
+    mkdir -p "$TEST_DIR/Meta/queues"
+    QUEUE_DIR="$TEST_DIR/Meta/queues"
+    echo '{"resolves_id": "msg-001", "status": "resolved"}' > "$QUEUE_DIR/architect-outbox.jsonl"
+    echo '{"message_id": "msg-001", "timestamp": "2026-03-25T08:05:00Z", "from": "architect", "to": "sorter", "status": "pending", "intent": "file_note", "payload": {"note": "test.md"}}' > "$QUEUE_DIR/sorter-outbox.jsonl"
+    echo '{"message_id": "msg-002", "timestamp": "2026-03-25T08:10:00Z", "from": "architect", "to": "sorter", "status": "pending", "intent": "file_note", "payload": {"note": "test2.md"}}' >> "$QUEUE_DIR/sorter-outbox.jsonl"
 
     cd "$TEST_DIR"
     cp "$PROJECT_ROOT/scripts/poll-queue.sh" "poll-queue.sh"
@@ -124,7 +124,7 @@ teardown() {
 
     run ./poll-queue.sh "sorter"
     assert_success
-    assert_output '{"timestamp":"2026-03-25T08:05:00Z","from":"architect","to":"sorter","status":"pending","intent":"file_note","payload":{"note":"test.md"}}'
+    assert_output '{"message_id":"msg-002","timestamp":"2026-03-25T08:10:00Z","from":"architect","to":"sorter","status":"pending","intent":"file_note","payload":{"note":"test2.md"}}'
 }
 
 @test "poll-queue.sh fails gracefully when queue file is missing" {
@@ -133,8 +133,8 @@ teardown() {
     chmod +x poll-queue.sh
 
     run ./poll-queue.sh "sorter"
-    assert_failure
-    assert_output --partial "Queue file not found"
+    assert_success
+    assert_output ""
 }
 
 @test "poll-queue.sh requires agent name parameter" {
@@ -144,7 +144,7 @@ teardown() {
 
     run ./poll-queue.sh
     assert_failure
-    assert_output '{"error": "Agent name parameter is required."}'
+    assert_output '{"error": "Agent name parameter required (e.g., ./poll-queue.sh architect)"}'
 }
 
 @test "Meta/vault-structure.json is valid JSON" {

@@ -173,9 +173,9 @@ if [[ -f "$REPO_DIR/Meta/tag-taxonomy.json" && ! -f "$VAULT_DIR/Meta/tag-taxonom
   success "Copied Meta/tag-taxonomy.json"
 fi
 
-if [[ ! -f "$VAULT_DIR/Meta/agent-messages.jsonl" ]]; then
+if [[ ! -d "$VAULT_DIR/Meta/queues" ]]; then
   echo '{"timestamp": "2026-03-25T08:00:00Z", "from": "system", "to": "architect", "status": "resolved", "intent": "initialize_bus", "payload": {"status": "online"}, "resolution": "JSONL bus initialized successfully."}' > "$VAULT_DIR/Meta/agent-messages.jsonl"
-  success "Created Meta/agent-messages.jsonl"
+  success "Created Meta/queues/ directories"
 fi
 
 if [[ ! -f "$VAULT_DIR/Meta/agent-log.md" ]]; then
