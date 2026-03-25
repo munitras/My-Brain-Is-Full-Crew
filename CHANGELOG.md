@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Created `.opencode/agents/archaeologist.md` configuring the Archaeologist subagent with Local, Augmented, and Deep-Web mining scopes (ARC-1105).
+- Instructed Archaeologist to prioritize a "Surface Scan" before deep mining (ARC-1107).
+- Created `scripts/ralph.sh` utility to orchestrate multi-mode mining operations saving raw outputs directly to `Meta/Scratchpad/` (ARC-1101).
+- Added `scripts.bats` test logic to verify Archaeologist agent configuration and `ralph.sh` execution.
 - Created `scripts/chronos-reporter.py` to parse `07-Daily/chronos-ledger.jsonl` and calculate time spent per task (SYS-1006).
 - Added tests in `scripts.bats` to ensure `chronos-reporter.py` calculates time deltas correctly.
 - Taught Scribe to recognize `@now` as a high-priority system interrupt to explicitly invoke the `context-switch.sh` tool for time-tracking (SYS-1003).

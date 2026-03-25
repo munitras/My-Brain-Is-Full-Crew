@@ -407,3 +407,39 @@ EOF
     run grep 'alias brainsleep="opencode --prompt '"'Execute ON_CLOSE.md...'\"" README.md
     assert_success
 }
+
+@test "ralph.sh executes local scan and saves to Scratchpad" {
+    cd "$MOCK_REPO"
+    cp "$PROJECT_ROOT/scripts/ralph.sh" "scripts/"
+    mkdir -p 00-Inbox
+    echo "test target content" > 00-Inbox/test-target.md
+    
+    run bash scripts/ralph.sh --mode local --target "test target" "$MOCK_REPO"
+    assert_success
+    assert_output --partial "Mining complete. Results saved to Meta/Scratchpad"
+    
+    # Check if a file was created in Meta/Scratchpad
+    run ls Meta/Scratchpad/
+    assert_success
+    assert_output --partial "mine-local-"
+    
+    # Check file content
+    FILE=$(ls Meta/Scratchpad/mine-local-*.md | head -n 1)
+    run cat "$FILE"
+    assert_output --partial "type: mining-result"
+    assert_output --partial "test target content"
+}
+
+@test "Archaeologist agent config exists with required instructions" {
+    cd "$PROJECT_ROOT"
+    [ -f ".opencode/agents/archaeologist.md" ]
+    
+    run grep "bash: allow" ".opencode/agents/archaeologist.md"
+    assert_success
+    
+    run grep "webfetch: allow" ".opencode/agents/archaeologist.md"
+    assert_success
+    
+    run grep "Surface Scan" ".opencode/agents/archaeologist.md"
+    assert_success
+}
