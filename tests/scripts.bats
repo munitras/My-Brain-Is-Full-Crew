@@ -111,6 +111,46 @@ teardown() {
     assert_output --partial "Path OK"
 }
 
+@test "context-switch.sh switches focus and creates profile if missing" {
+    cd "$MOCK_REPO"
+    cp "$PROJECT_ROOT/scripts/context-switch.sh" "scripts/"
+    run bash scripts/context-switch.sh --switch "Deep Work" "$MOCK_REPO"
+    assert_success
+    assert_output --partial "Switched focus to: Deep Work"
+    
+    run grep 'current_focus: "Deep Work"' "$MOCK_REPO/Meta/user-profile.md"
+    assert_success
+    run grep 'focus_status: "active"' "$MOCK_REPO/Meta/user-profile.md"
+    assert_success
+}
+
+@test "context-switch.sh pauses and resumes focus" {
+    cd "$MOCK_REPO"
+    cp "$PROJECT_ROOT/scripts/context-switch.sh" "scripts/"
+    
+    # Create initial state
+    mkdir -p "$MOCK_REPO/Meta"
+    cat << 'EOF' > "$MOCK_REPO/Meta/user-profile.md"
+---
+current_focus: "Writing Tests"
+focus_status: "active"
+---
+# User Profile
+EOF
+
+    run bash scripts/context-switch.sh --pause "$MOCK_REPO"
+    assert_success
+    assert_output --partial "Paused current focus"
+    run grep 'focus_status: "paused"' "$MOCK_REPO/Meta/user-profile.md"
+    assert_success
+    
+    run bash scripts/context-switch.sh --resume "$MOCK_REPO"
+    assert_success
+    assert_output --partial "Resumed current focus"
+    run grep 'focus_status: "active"' "$MOCK_REPO/Meta/user-profile.md"
+    assert_success
+}
+
 @test "foreman-sweep.sh extracts open tasks correctly" {
     cd "$MOCK_REPO"
     cp "$PROJECT_ROOT/scripts/foreman-sweep.sh" "scripts/"

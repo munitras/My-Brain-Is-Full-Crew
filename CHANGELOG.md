@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Created `scripts/context-switch.sh` to update `current_focus` in `Meta/user-profile.md` for the Chronos system (SYS-1001).
+- Added test cases in `scripts.bats` to verify `context-switch.sh` correctly updates focus and status.
 - Created `.opencode/ON_CLOSE.md` defining the Evening Shutdown Macro to enforce Inbox Zero programmatically via Sorter and Librarian (WRK-901).
 - Integrated a daily reflection interactive prompt into `ON_CLOSE.md` routing directly to the Scribe (WRK-902).
 - Documented `brainsleep` shell alias in `README.md` to trigger the shutdown macro seamlessly (WRK-903).
