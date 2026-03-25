@@ -26,4 +26,4 @@ Test-*/
 
 # Dev config (local only)
 *.local.json
-*.local.md
+*.local.mdtest_vault/
