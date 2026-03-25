@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased] — 2026-03-25
 
 ### Added
+- JSONL Schema for Message Queue (`Meta/schemas/message-schema.json`).
+- `poll-queue.sh` Wrapper Script for efficient queue filtering.
 - `.opencode/ON_START.md` file deployment support during installation and updates.
 - Automatically copy `scripts/` directory utilities (`validate-paths.sh`, `verify-integrity.sh`, etc.) to the target vault environment.
 - Vault structure recreation added to `scripts/update-opencode.sh` to handle accidentally missing directories.
