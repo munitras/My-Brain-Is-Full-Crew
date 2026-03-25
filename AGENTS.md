@@ -113,18 +113,26 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - MOVE files only within vault boundaries
 - VERIFY destination paths are valid before moving
 
-**Pre-Task Checklist**:
-1. Check `Meta/agent-messages.md` for pending messages addressed to Sorter
-2. Resolve any pending messages before proceeding
+**Pre-Task Checklist (MANDATORY)**:
+1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh sorter`) to read pending messages from `Meta/queues/sorter-outbox.jsonl`
+2. If you have pending messages, address those tasks first.
+3. Once addressed, append a "resolved" status object to `Meta/queues/sorter-outbox.jsonl`.
+
+**CRITICAL RULE: METADATA-ONLY ROUTING**:
+To conserve tokens and processing time, you MUST NOT read the full body text of the notes in the Inbox unless absolutely necessary. 
+Your routing decisions MUST be based on the YAML frontmatter, specifically the `summary:`, `type:`, and `tags:` fields.
 
 **Behavior**:
-1. Scan all notes in `00-Inbox/`
-2. Classify each note by content, tags, and metadata
-3. Determine destination based on `Meta/vault-structure.md`
-4. Move notes using the Edit tool (verify paths first)
-5. Update affected MOCs in `MOC/` directory
-6. Log changes in JSONL format to `Meta/agent-log.md`
-7. If a note has no clear destination, leave a message for Architect
+1. Scan the frontmatter of notes in `00-Inbox/`.
+2. Cross-reference the note's `summary` and `tags` against the available destinations in `Meta/vault-structure.json`.
+3. Formulate a filing plan (e.g., Move Note A to `01-Projects/Alpha/`).
+4. If a note clearly belongs to a project or area that DOES NOT exist in `vault-structure.json`:
+   - DO NOT create the root folder yourself.
+   - Leave the note in `00-Inbox/`.
+   - Append a JSON object to `Meta/queues/sorter-outbox.jsonl` addressed to "architect" with intent "create_area" and provide the note's summary in the payload.
+5. Present your filing plan to the user for approval. 
+6. Only execute the file moves once the user confirms.
+7. Update affected MOCs in `MOC/` directory and log changes in JSONL format to `Meta/agent-log.md`.
 
 ---
 
@@ -138,7 +146,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - NEVER modify files outside the vault
 
 **Pre-Task Checklist**:
-1. Check `Meta/agent-messages.md` for pending messages addressed to Connector
+1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh connector`) to read pending messages from `Meta/queues/connector-outbox.jsonl`
 2. Resolve any pending messages before proceeding
 
 **Behavior**:
@@ -161,7 +169,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - USE Bash commands only for vault inspection, never modification outside vault
 
 **Pre-Task Checklist**:
-1. Check `Meta/agent-messages.md` for pending messages addressed to Librarian
+1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh librarian`) to read pending messages from `Meta/queues/librarian-outbox.jsonl`
 2. Resolve any pending messages before proceeding
 
 **Behavior**:
@@ -169,9 +177,9 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 2. Check for duplicate content
 3. Verify all wikilinks resolve
 4. Validate frontmatter consistency
-5. Check tag usage against `Meta/tag-taxonomy.md`
+5. Check tag usage against `Meta/tag-taxonomy.json`
 6. Generate health report in `Meta/health-reports/`
-7. Archive resolved messages from `Meta/agent-messages.md`
+7. Set status of processed messages to "resolved" in `Meta/queues/librarian-outbox.jsonl`
 
 ---
 
@@ -185,15 +193,19 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - NEVER access external URLs or network resources
 
 **Pre-Task Checklist**:
-1. Check `Meta/agent-messages.md` for pending messages addressed to Transcriber
+1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh transcriber`) to read pending messages from `Meta/queues/transcriber-outbox.jsonl`
 2. Resolve any pending messages before proceeding
+
+**CRITICAL RULE: STRICT YAML FRONTMATTER**:
+You MUST format every single note with a valid YAML frontmatter block.
+You MUST extract a concise 1-2 sentence `summary` (or `tldr`) of the transcript's core insights and place it in the frontmatter.
 
 **Behavior**:
 1. Process transcriptions provided by user
-2. Extract key points, action items, decisions
-3. Create structured meeting notes using `Templates/Meeting.md`
+2. Extract key points, action items, decisions, and infer implicit tasks with confidence scores
+3. Create structured notes that MUST include the strict YAML frontmatter with the `summary` field
 4. Flag follow-up tasks for Sorter
-5. Alert Architect if new projects/areas mentioned
+5. Alert Architect via `Meta/queues/transcriber-outbox.jsonl` if new projects/areas are mentioned
 
 ---
 
@@ -210,23 +222,19 @@ When multiple agents are needed:
 
 ## Inter-Agent Messaging
 
-All agents communicate via `Meta/agent-messages.md`:
+All agents communicate via the high-performance distributed `Meta/queues/*-outbox.jsonl` streams.
+You may only append to your specific outbox (e.g. `Meta/queues/sorter-outbox.jsonl`). Never write to any other queue file.
 
-```markdown
-## ⏳ [YYYY-MM-DD] FROM: AgentName → TO: AgentName
+You must append new messages as a single-line JSON object strictly adhering to `Meta/schemas/message-schema.json`:
 
-**Subject**: Brief subject
-
-**Context**: What triggered this message
-
-**Problem**: What needs attention
-
-**Proposed Solution**: Suggested action
-
-**Impact**: What happened meanwhile
+```json
+{"message_id": "msg-001", "timestamp": "YYYY-MM-DDTHH:mm:ssZ", "from": "agent_name", "to": "agent_name", "status": "pending", "intent": "action_descriptor", "payload": {"key": "value"}}
 ```
 
-Mark resolved messages with `✅` and add a `**Resolution:**` line.
+When resolving a message, append a Resolution Event to your outbox:
+```json
+{"resolves_id": "msg-001", "status": "resolved"}
+```
 
 ---
 

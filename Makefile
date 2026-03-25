@@ -38,7 +38,7 @@ help: ## Show this help message
 	@echo -e "  $(CYAN)update$(NC)          Update an existing installation in your vault"
 	@echo ""
 	@echo -e "$(BOLD)Project Utilities:$(NC)"
-	@echo -e "  $(CYAN)context$(NC)         Generate project long-context.txt for review"
+	@echo -e "  $(CYAN)context$(NC)         Generate project-context-<date>.txt for review"
 	@echo ""
 	@echo -e "$(BOLD)Examples:$(NC)"
 	@echo -e "  make test             Run all integrity and script tests"

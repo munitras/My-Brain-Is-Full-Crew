@@ -163,15 +163,19 @@ info "Creating initial Meta files..."
 # Store install location for update script
 echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
 
-if [[ ! -f "$VAULT_DIR/Meta/agent-messages.md" ]]; then
-  cat > "$VAULT_DIR/Meta/agent-messages.md" << 'EOF'
-# Agent Message Board
+if [[ -f "$REPO_DIR/Meta/vault-structure.json" && ! -f "$VAULT_DIR/Meta/vault-structure.json" ]]; then
+  cp "$REPO_DIR/Meta/vault-structure.json" "$VAULT_DIR/Meta/vault-structure.json"
+  success "Copied Meta/vault-structure.json"
+fi
 
-Messages are listed newest-first. Resolved messages are marked ✅ and kept for 7 days, then archived by the Librarian.
+if [[ -f "$REPO_DIR/Meta/tag-taxonomy.json" && ! -f "$VAULT_DIR/Meta/tag-taxonomy.json" ]]; then
+  cp "$REPO_DIR/Meta/tag-taxonomy.json" "$VAULT_DIR/Meta/tag-taxonomy.json"
+  success "Copied Meta/tag-taxonomy.json"
+fi
 
-_(No messages yet)_
-EOF
-  success "Created Meta/agent-messages.md"
+if [[ ! -d "$VAULT_DIR/Meta/queues" ]]; then
+  echo '{"timestamp": "2026-03-25T08:00:00Z", "from": "system", "to": "architect", "status": "resolved", "intent": "initialize_bus", "payload": {"status": "online"}, "resolution": "JSONL bus initialized successfully."}' > "$VAULT_DIR/Meta/agent-messages.jsonl"
+  success "Created Meta/queues/ directories"
 fi
 
 if [[ ! -f "$VAULT_DIR/Meta/agent-log.md" ]]; then

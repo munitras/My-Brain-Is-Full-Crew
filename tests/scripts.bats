@@ -110,3 +110,111 @@ teardown() {
     assert_success
     assert_output --partial "Path OK"
 }
+
+@test "poll-queue.sh filters pending messages for specific agent" {
+    mkdir -p "$TEST_DIR/Meta/queues"
+    QUEUE_DIR="$TEST_DIR/Meta/queues"
+    echo '{"resolves_id": "msg-001", "status": "resolved"}' > "$QUEUE_DIR/architect-outbox.jsonl"
+    echo '{"message_id": "msg-001", "timestamp": "2026-03-25T08:05:00Z", "from": "architect", "to": "sorter", "status": "pending", "intent": "file_note", "payload": {"note": "test.md"}}' > "$QUEUE_DIR/sorter-outbox.jsonl"
+    echo '{"message_id": "msg-002", "timestamp": "2026-03-25T08:10:00Z", "from": "architect", "to": "sorter", "status": "pending", "intent": "file_note", "payload": {"note": "test2.md"}}' >> "$QUEUE_DIR/sorter-outbox.jsonl"
+
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/poll-queue.sh" "poll-queue.sh"
+    chmod +x poll-queue.sh
+
+    run ./poll-queue.sh "sorter"
+    assert_success
+    assert_output '{"message_id":"msg-002","timestamp":"2026-03-25T08:10:00Z","from":"architect","to":"sorter","status":"pending","intent":"file_note","payload":{"note":"test2.md"}}'
+}
+
+@test "poll-queue.sh fails gracefully when queue file is missing" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/poll-queue.sh" "poll-queue.sh"
+    chmod +x poll-queue.sh
+
+    run ./poll-queue.sh "sorter"
+    assert_success
+    assert_output ""
+}
+
+@test "poll-queue.sh requires agent name parameter" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/poll-queue.sh" "poll-queue.sh"
+    chmod +x poll-queue.sh
+
+    run ./poll-queue.sh
+    assert_failure
+    assert_output '{"error": "Agent name parameter required (e.g., ./poll-queue.sh architect)"}'
+}
+
+@test "Meta/vault-structure.json is valid JSON" {
+    run jq empty "$PROJECT_ROOT/Meta/vault-structure.json"
+    assert_success
+}
+
+@test "Meta/tag-taxonomy.json is valid JSON" {
+    run jq empty "$PROJECT_ROOT/Meta/tag-taxonomy.json"
+    assert_success
+}
+
+@test "generate-golden-dataset.py creates 50 notes" {
+    # Run the script in the test environment
+    mkdir -p "$TEST_DIR/tests/fixtures"
+    # Ensure script writes to the test directory by overriding the VAULT_DIR or just running it in a tmp folder
+    # Wait, the script hardcodes VAULT_DIR = "tests/fixtures/golden-vault" relative to CWD.
+    cd "$TEST_DIR"
+    mkdir -p "tests/fixtures"
+    cp "$PROJECT_ROOT/scripts/generate-golden-dataset.py" .
+    
+    run python3 generate-golden-dataset.py
+    assert_success
+    assert_output --partial "Golden dataset vault generated with 50 notes."
+    
+    # Check that 50 notes were created in 00-Inbox
+    run bash -c "ls -1 tests/fixtures/golden-vault/00-Inbox/*.md | wc -l"
+    assert_output "50"
+    
+    # Check that answer-key.json was created
+    assert [ -f "tests/fixtures/golden-vault/answer-key.json" ]
+}
+
+@test "benchmark-sorter.py calculates accuracy correctly" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/benchmark-sorter.py" .
+    
+    echo '{"note1.md": "01-Projects/Alpha", "note2.md": "00-Inbox"}' > answer-key.json
+    echo '{"note1.md": "01-Projects/Alpha", "note2.md": "01-Projects/Beta"}' > predictions.json
+    
+    run python3 benchmark-sorter.py answer-key.json predictions.json
+    assert_success
+    assert_output --partial "Baseline Accuracy     : 50.00% (1/2)"
+}
+
+@test "benchmark-transcriber.py calculates precision and recall correctly" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/benchmark-transcriber.py" .
+
+    echo '{"explicit_tasks": ["Buy groceries", "Fix the car"], "implicit_tasks": ["Call mom"]}' > transcriber-answer.json
+    echo '{"extracted_tasks": ["Buy groceries", "Call mom", "Random thought"]}' > transcriber-preds.json
+
+    run python3 benchmark-transcriber.py transcriber-answer.json transcriber-preds.json
+    assert_success
+    assert_output --partial "Explicit Tasks Captured: 1/2 (50.00%)"
+    assert_output --partial "Hallucinated Tasks     : 1/3 (33.33%)"
+}
+
+@test "benchmark-connector.py calculates wikilink connections correctly" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/benchmark-connector.py" .
+
+    mkdir -p dummy-vault
+    echo "This is a note linking to [[ValidNote]] and [[DeadNote]]." > dummy-vault/Note1.md
+    echo "Another link [[ValidNote#Section]] here." > dummy-vault/ValidNote.md
+
+    run python3 benchmark-connector.py dummy-vault
+    assert_success
+    assert_output --partial "Total Wikilinks Found: 3"
+    assert_output --partial "Valid Semantic Connections: 2"
+    assert_output --partial "Dead Links: 1"
+    assert_output --partial "Dead Link Rate: 33.33%"
+}

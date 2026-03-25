@@ -5,17 +5,44 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased] — 2026-03-25
-
 ### Added
+- Implemented Lock-Free CQRS Message Bus (Epic 5) with distributed agent outboxes in `Meta/queues/`.
+- Modified `poll-queue.sh` to act as a CQRS Projection Engine, dynamically resolving pending tasks without locks.
+- Updated `Meta/schemas/message-schema.json` to enforce `message_id` on requests and `resolves_id` on Resolution Events.
+- Finalized Stream 1 Alpha Core: All tasks verified, documentation and Makefile updated. Project is rollout-ready.
+- Created `scripts/benchmark-connector.py` to evaluate valid wikilinks and dead link rate (TST-404).
+- Added `scripts.bats` test logic to verify Connector integrity script executes accurately.
+- Created `scripts/benchmark-transcriber.py` to evaluate Transcriber extraction performance (TST-403).
+- Added Golden dataset transcript fixture, expected answer key, and mock predictions for Transcriber benchmarking.
+- Created a benchmark evaluation script `scripts/benchmark-sorter.py` and modified `generate-golden-dataset.py` to output a baseline answer key for the Sorter Routing Benchmark (TST-402).
+- Added test coverage in `scripts.bats` to ensure the benchmark script accurately calculates baseline accuracy against mock predictions.
+- Created Golden Dataset vault benchmarking setup with a python generation script (`scripts/generate-golden-dataset.py`) generating 50 pre-categorized test notes (TST-401).
+- Added `scripts.bats` test logic to verify Golden Dataset vault generation script executes accurately (TST-401).
+- Converted `vault-structure.md` and `tag-taxonomy.md` to JSON configurations (CTX-201, CTX-202).
+- Tests in `scripts.bats` to ensure `vault-structure.json` and `tag-taxonomy.json` are valid JSON.
+- Built Dataview Observability Dashboard at `Meta/Dashboard.md` (SYS-105).
+- Added unit tests for `poll-queue.sh` in `tests/scripts.bats`.
+- JSONL Schema for Message Queue (`Meta/schemas/message-schema.json`).
+- `poll-queue.sh` Wrapper Script for efficient queue filtering.
 - `.opencode/ON_START.md` file deployment support during installation and updates.
 - Automatically copy `scripts/` directory utilities (`validate-paths.sh`, `verify-integrity.sh`, etc.) to the target vault environment.
 - Vault structure recreation added to `scripts/update-opencode.sh` to handle accidentally missing directories.
 
 ### Changed
+- Enforced Strict YAML Schema on Ingestion (OPT-301) by updating Scribe and Transcriber instructions to mandate standardized YAML frontmatter with a `summary` field.
+- Optimized Sorter Triage Logic (OPT-302) by instructing Sorter to base routing decisions exclusively on frontmatter metadata to conserve tokens.
+- Updated Agent Context Injection (Sorter, Librarian, Architect) to read from new JSON configurations (CTX-203).
+- Updated manifest generation script to include `Meta/vault-structure.json` and `Meta/tag-taxonomy.json`.
+- Modified install and update scripts to handle deploying JSON configurations to the vault.
+- Updated `AGENTS.md` pre-task checklists for Sorter, Connector, Librarian, and Transcriber to invoke the `check_messages` tool and read from JSONL instead of markdown (SYS-103).
+- Updated `AGENTS.md` and `CONTRIBUTING.md` Inter-Agent Messaging sections to specify strict JSON schema usage (SYS-104).
+- Updated `scripts/install-opencode.sh` to initialize `.jsonl` message bus instead of `.md` format.
 - Fixed ShellCheck warnings (SC2034, SC2317, SC2001) across `scripts/*.sh` to improve bash compliance.
 - Switched `echo -e` formats to cleaner `printf` or single-parameter `echo -e` implementations where necessary.
 - Simplified bash logic (e.g. replacing `cat file | tr` with `tr < file`).
 - Updated `Meta/agent-manifest.json` generation logic to support the inclusion of scripts and `.opencode/ON_START.md`.
+- Fixed failing integrity check by updating the expected SHA256 hash for `AGENTS.md` in `Meta/agent-manifest.json`.
+- Updated the help message for the `context` target in the `Makefile` to reflect the correct generated file name (`project-context-<date>.txt`).
 
 ---
 

@@ -61,6 +61,10 @@ done
 [[ -f "$REPO_DIR/scripts/validate-paths.sh" ]] && FILES+=("scripts/validate-paths.sh")
 [[ -f "$REPO_DIR/scripts/generate-context.sh" ]] && FILES+=("scripts/generate-context.sh")
 
+# New: include JSON configurations
+[[ -f "$REPO_DIR/Meta/vault-structure.json" ]] && FILES+=("Meta/vault-structure.json")
+[[ -f "$REPO_DIR/Meta/tag-taxonomy.json" ]] && FILES+=("Meta/tag-taxonomy.json")
+
 if [[ ${#FILES[@]} -eq 0 ]]; then
   printf "   Error: No agent files found\n" >&2
   exit 1

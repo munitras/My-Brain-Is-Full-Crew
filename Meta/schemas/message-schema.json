@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Inter-Agent Event",
+  "type": "object",
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp (e.g., 2026-03-25T08:30:00Z)"
+    },
+    "from": {
+      "type": "string",
+      "enum": ["architect", "scribe", "seeker", "sorter", "connector", "librarian", "transcriber", "system"]
+    },
+    "to": {
+      "type": "string",
+      "enum": ["architect", "scribe", "seeker", "sorter", "connector", "librarian", "transcriber", "system"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "resolved"]
+    },
+    "intent": {
+      "type": "string",
+      "description": "Short, snake_case action descriptor (e.g., file_note, create_area, link_graph)"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Key-value pairs of context required for the task. Values must be strings or string arrays."
+    },
+    "resolution": {
+      "type": "string",
+      "description": "Optional description of the outcome."
+    },
+    "message_id": {
+      "type": "string",
+      "description": "Unique identifier for the request message."
+    },
+    "resolves_id": {
+      "type": "string",
+      "description": "Reference to the message_id that this event resolves."
+    }
+  },
+  "oneOf": [
+    {
+      "required": ["message_id", "timestamp", "from", "to", "status", "intent", "payload"]
+    },
+    {
+      "required": ["resolves_id", "status"]
+    }
+  ]
+}
