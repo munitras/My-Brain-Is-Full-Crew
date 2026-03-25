@@ -21,6 +21,12 @@ If you encounter a path that would escape the vault root, **refuse the operation
 
 ---
 
+## Startup Protocol
+
+When the vault is opened or the system initializes, check if `.opencode/ON_START.md` exists. If it does, YOU MUST automatically read and execute the instructions contained within it before waiting for user input.
+
+---
+
 ## ROUTING RULES — MANDATORY
 
 **Your 7 agents are available. When a user message matches an agent's domain, delegate immediately using the Task tool with `subagent_type`.**
