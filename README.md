@@ -78,6 +78,14 @@ cd My-Brain-Is-Full-Crew
 
 ### 3. Run the installer
 
+You can use the provided `Makefile` for a guided experience:
+
+```bash
+make install
+```
+
+Alternatively, run the script directly:
+
 ```bash
 bash scripts/install-opencode.sh
 ```
@@ -247,6 +255,7 @@ Each agent has specific tool permissions:
 
 | File | Purpose |
 |------|---------|
+| `Makefile` | High-level SDLC and installation automation |
 | `AGENTS.md` | Main dispatcher with routing logic |
 | `.opencode/agents/*.md` | Subagent definitions (Architect, Scribe, Seeker) |
 | `.opencode/references/*.md` | Shared documentation for all agents |
@@ -254,6 +263,7 @@ Each agent has specific tool permissions:
 | `scripts/update-opencode.sh` | Update after pulling changes |
 | `scripts/verify-integrity.sh` | Verify file hashes |
 | `scripts/generate-manifest.sh` | Regenerate integrity manifest |
+| `scripts/generate-context.sh` | Generate dated project-context.txt |
  | `scripts/validate-paths.sh` | Runtime path boundary validator |
  | `SECURITY.md` | Security policy and practices |
  | `tests/scripts.bats` | Shell script test suite |
@@ -270,7 +280,13 @@ Each agent has specific tool permissions:
 
 ## Updating
 
-After pulling changes from the repo:
+After pulling changes from the repo, you can use the Makefile to verify and update:
+
+```bash
+make update
+```
+
+Alternatively, run the scripts manually:
 
 ```bash
 cd /path/to/your-vault/My-Brain-Is-Full-Crew
