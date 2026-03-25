@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased] — 2026-03-25
 
 ### Added
+- Created Golden Dataset vault benchmarking setup with a python generation script (`scripts/generate-golden-dataset.py`) generating 50 pre-categorized test notes (TST-401).
+- Added `scripts.bats` test logic to verify Golden Dataset vault generation script executes accurately (TST-401).
 - Converted `vault-structure.md` and `tag-taxonomy.md` to JSON configurations (CTX-201, CTX-202).
 - Tests in `scripts.bats` to ensure `vault-structure.json` and `tag-taxonomy.json` are valid JSON.
 - Built Dataview Observability Dashboard at `Meta/Dashboard.md` (SYS-105).

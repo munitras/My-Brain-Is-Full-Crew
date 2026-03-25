@@ -156,3 +156,21 @@ teardown() {
     run jq empty "$PROJECT_ROOT/Meta/tag-taxonomy.json"
     assert_success
 }
+
+@test "generate-golden-dataset.py creates 50 notes" {
+    # Run the script in the test environment
+    mkdir -p "$TEST_DIR/tests/fixtures"
+    # Ensure script writes to the test directory by overriding the VAULT_DIR or just running it in a tmp folder
+    # Wait, the script hardcodes VAULT_DIR = "tests/fixtures/golden-vault" relative to CWD.
+    cd "$TEST_DIR"
+    mkdir -p "tests/fixtures"
+    cp "$PROJECT_ROOT/scripts/generate-golden-dataset.py" .
+    
+    run python3 generate-golden-dataset.py
+    assert_success
+    assert_output --partial "Golden dataset vault generated with 50 notes."
+    
+    # Check that 50 notes were created in 00-Inbox
+    run bash -c "ls -1 tests/fixtures/golden-vault/00-Inbox/*.md | wc -l"
+    assert_output "50"
+}
