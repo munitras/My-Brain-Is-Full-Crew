@@ -337,6 +337,17 @@ EOF
     assert_success
 }
 
+@test ".opencode/agents/scribe.md is configured to allow bash and handle @now interrupts" {
+    cd "$PROJECT_ROOT"
+    assert [ -f ".opencode/agents/scribe.md" ]
+    run grep 'bash: allow' .opencode/agents/scribe.md
+    assert_success
+    run grep 'System Interrupts: `@now`' .opencode/agents/scribe.md
+    assert_success
+    run grep 'context-switch.sh' .opencode/agents/scribe.md
+    assert_success
+}
+
 @test ".opencode/agents/synthesizer.md exists and is configured as a subagent" {
     cd "$PROJECT_ROOT"
     assert [ -f ".opencode/agents/synthesizer.md" ]

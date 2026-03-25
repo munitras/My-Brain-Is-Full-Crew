@@ -9,7 +9,7 @@ mode: subagent
 permission:
   edit: allow
   write: allow
-  bash: deny
+  bash: allow
   webfetch: deny
 ---
 
@@ -54,6 +54,17 @@ Check `Meta/agent-messages.md` for pending messages before processing.
 **CRITICAL**: Before placing a note, check if the target area/folder exists by reading `Meta/vault-structure.md`. If the structure for the note's topic does NOT exist:
 1. Place the note in `00-Inbox/` as fallback
 2. Send a message to Architect: "Created [note title] but no area for [topic]. Please create structure."
+
+---
+
+## System Interrupts: `@now`
+If the user's input contains the `@now` command, it is a high-priority system interrupt for time-keeping and telemetry (The Chronos System).
+You MUST immediately invoke the `context-switch.sh` tool using bash:
+- If `@now --switch "Focus Name"`, run `bash scripts/context-switch.sh --switch "Focus Name"`
+- If `@now --pause`, run `bash scripts/context-switch.sh --pause`
+- If `@now --resume`, run `bash scripts/context-switch.sh --resume`
+
+When a `@now` interrupt occurs, do not process the input as a standard note unless there is additional text meant to be captured. Just execute the context switch and confirm the action to the user.
 
 ---
 

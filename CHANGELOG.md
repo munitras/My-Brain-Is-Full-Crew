@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Taught Scribe to recognize `@now` as a high-priority system interrupt to explicitly invoke the `context-switch.sh` tool for time-tracking (SYS-1003).
+- Added `bash: allow` permission to Scribe to execute the context switch script.
+- Added tests in `scripts.bats` to ensure Scribe is properly configured for the `@now` system interrupt command.
 - Implemented Chronos Ledger appending logic in `scripts/context-switch.sh` to track context switching events in `07-Daily/chronos-ledger.jsonl` (SYS-1002).
 - Added test coverage in `scripts.bats` to ensure `context-switch.sh` writes correct JSONL entries to the Chronos Ledger.
 - Created `scripts/context-switch.sh` to update `current_focus` in `Meta/user-profile.md` for the Chronos system (SYS-1001).
