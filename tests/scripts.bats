@@ -151,6 +151,30 @@ EOF
     assert_success
 }
 
+@test "context-switch.sh writes to chronos-ledger.jsonl" {
+    cd "$MOCK_REPO"
+    cp "$PROJECT_ROOT/scripts/context-switch.sh" "scripts/"
+    
+    run bash scripts/context-switch.sh --switch "Deep Work" "$MOCK_REPO"
+    assert_success
+    
+    # Check that ledger file was created and contains the correct JSON
+    assert [ -f "$MOCK_REPO/07-Daily/chronos-ledger.jsonl" ]
+    
+    run grep '"action": "switch"' "$MOCK_REPO/07-Daily/chronos-ledger.jsonl"
+    assert_success
+    run grep '"task": "Deep Work"' "$MOCK_REPO/07-Daily/chronos-ledger.jsonl"
+    assert_success
+    
+    run bash scripts/context-switch.sh --pause "$MOCK_REPO"
+    assert_success
+    
+    run grep '"action": "pause"' "$MOCK_REPO/07-Daily/chronos-ledger.jsonl"
+    assert_success
+    run grep '"task": "Deep Work"' "$MOCK_REPO/07-Daily/chronos-ledger.jsonl"
+    assert_success
+}
+
 @test "foreman-sweep.sh extracts open tasks correctly" {
     cd "$MOCK_REPO"
     cp "$PROJECT_ROOT/scripts/foreman-sweep.sh" "scripts/"

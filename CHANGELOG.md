@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Implemented Chronos Ledger appending logic in `scripts/context-switch.sh` to track context switching events in `07-Daily/chronos-ledger.jsonl` (SYS-1002).
+- Added test coverage in `scripts.bats` to ensure `context-switch.sh` writes correct JSONL entries to the Chronos Ledger.
 - Created `scripts/context-switch.sh` to update `current_focus` in `Meta/user-profile.md` for the Chronos system (SYS-1001).
 - Added test cases in `scripts.bats` to verify `context-switch.sh` correctly updates focus and status.
 - Created `.opencode/ON_CLOSE.md` defining the Evening Shutdown Macro to enforce Inbox Zero programmatically via Sorter and Librarian (WRK-901).

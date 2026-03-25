@@ -69,18 +69,40 @@ ${key}: \"${value}\"" "$PROFILE_FILE"
     rm -f "${PROFILE_FILE}.bak"
 }
 
+log_chronos_event() {
+    local action="$1"
+    local focus="$2"
+    local ledger_dir="$VAULT_DIR/07-Daily"
+    local ledger_file="$ledger_dir/chronos-ledger.jsonl"
+    local timestamp
+    timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+    mkdir -p "$ledger_dir"
+    
+    # Escape quotes in focus name for JSON
+    local safe_focus="${focus//\"/\\\"}"
+    
+    printf '{"timestamp": "%s", "action": "%s", "task": "%s"}\n' "$timestamp" "$action" "$safe_focus" >> "$ledger_file"
+}
+
 case "$ACTION" in
     switch)
         update_yaml "current_focus" "$FOCUS_NAME"
         update_yaml "focus_status" "active"
+        log_chronos_event "switch" "$FOCUS_NAME"
         echo "Switched focus to: $FOCUS_NAME"
         ;;
     pause)
+        # Extract current focus to log it
+        CURRENT_FOCUS=$(grep "^current_focus:" "$PROFILE_FILE" | sed 's/^current_focus: "\(.*\)"/\1/')
         update_yaml "focus_status" "paused"
+        log_chronos_event "pause" "$CURRENT_FOCUS"
         echo "Paused current focus"
         ;;
     resume)
+        CURRENT_FOCUS=$(grep "^current_focus:" "$PROFILE_FILE" | sed 's/^current_focus: "\(.*\)"/\1/')
         update_yaml "focus_status" "active"
+        log_chronos_event "resume" "$CURRENT_FOCUS"
         echo "Resumed current focus"
         ;;
 esac
