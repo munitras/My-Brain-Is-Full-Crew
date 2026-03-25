@@ -1,6 +1,6 @@
 # My Brain Is Full Crew — OpenCode Edition
 
-A team of 9 AI agents that manage your Obsidian vault. Talk naturally, they organize everything.
+A team of 10 AI agents that manage your Obsidian vault. Talk naturally, they organize everything.
 
 ---
 
@@ -29,7 +29,7 @@ When the vault is opened or the system initializes, check if `.opencode/ON_START
 
 ## ROUTING RULES — MANDATORY
 
-**Your 9 agents are available. When a user message matches an agent's domain, delegate immediately using the Task tool with `subagent_type`.**
+**Your 10 agents are available. When a user message matches an agent's domain, delegate immediately using the Task tool with `subagent_type`.**
 
 ### Priority Routing
 
@@ -40,18 +40,19 @@ When the vault is opened or the system initializes, check if `.opencode/ON_START
 | 3 | seeker | Subagent | Vault search, "find", "where did I put", questions about notes |
 | 4 | reader | Subagent | Web articles, links, URLs, external research |
 | 5 | synthesizer | Subagent | Write essays, proposals, emails based on notes, drafting |
-| 6 | architect | Subagent | Vault structure, areas, templates, MOCs, onboarding, defrag |
-| 7 | sorter | In-Context | Inbox triage, filing, note sorting |
-| 8 | connector | In-Context | Links between notes, graph, relationships, cross-linking |
-| 9 | librarian | In-Context | Maintenance, duplicates, broken links, audit, cleanup |
+| 6 | archaeologist | Subagent | Deep-dive research, multi-mode mining, external data gathering |
+| 7 | architect | Subagent | Vault structure, areas, templates, MOCs, onboarding, defrag |
+| 8 | sorter | In-Context | Inbox triage, filing, note sorting |
+| 9 | connector | In-Context | Links between notes, graph, relationships, cross-linking |
+| 10 | librarian | In-Context | Maintenance, duplicates, broken links, audit, cleanup |
 
 ### Subagent Agents (Use Task Tool)
 
-For **architect**, **seeker**, **scribe**, **reader**, and **synthesizer**, use the Task tool:
+For **architect**, **seeker**, **scribe**, **reader**, **synthesizer**, and **archaeologist**, use the Task tool:
 
 ```
 Task tool with:
-- subagent_type: "architect" | "seeker" | "scribe" | "reader" | "synthesizer"
+- subagent_type: "architect" | "seeker" | "scribe" | "reader" | "synthesizer" | "archaeologist"
 - description: Brief task description
 - prompt: User's full request + context
 ```
@@ -239,6 +240,20 @@ Use subagent_type: `synthesizer` for all complex drafting from notes.
 
 ---
 
+### 10. ARCHAEOLOGIST (Subagent)
+
+**Role**: Deep-Dive Research & Data Mining
+**Triggers**: "mine this url", "deep research", "run a surface scan", "extract data from"
+
+**Security Constraints**:
+- WRITE raw data only to `Meta/Scratchpad/`
+- MAY use `ralph.sh` utility for Local, Augmented, and Deep-Web scopes
+- PREFER Surface Scan before deep mining
+
+Use subagent_type: `archaeologist` for long-running mining operations.
+
+---
+
 ## Co-activation Rules
 
 When multiple agents are needed:
@@ -316,6 +331,7 @@ Meta/              ← Config, logs, agent messages
 | "Transcribe meeting" | Transcriber | Process directly |
 | "Read this link" | Reader (subagent) | Task tool with prompt |
 | "Draft a document" | Synthesizer (subagent) | Task tool with prompt |
+| "Mine this data" | Archaeologist (subagent) | Task tool with prompt |
 
 ---
 

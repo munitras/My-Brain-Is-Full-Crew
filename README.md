@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Agents-7-blueviolet?style=for-the-badge" alt="7 Agents" />
+  <img src="https://img.shields.io/badge/Agents-10-blueviolet?style=for-the-badge" alt="10 Agents" />
   <img src="https://img.shields.io/badge/Language-Any-success?style=for-the-badge" alt="Any Language" />
   <img src="https://img.shields.io/badge/Platform-Obsidian%20%2B%20OpenCode-blue?style=for-the-badge" alt="Obsidian + OpenCode" />
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="MIT License" />
@@ -7,7 +7,7 @@
 
 # My Brain Is Full - Crew (OpenCode Edition)
 
-### A team of 7 AI agents that manage your Obsidian vault so your brain doesn't have to.
+### A team of 10 AI agents that manage your Obsidian vault so your brain doesn't have to.
 
 You talk. They organize, file, connect, search, and triage. In any language.
 
@@ -30,7 +30,7 @@ When the transcription agent processes a meeting and discovers a new project, th
 
 ---
 
-## The Crew (7 Agents)
+## The Crew (10 Agents)
 
 | # | Agent | Role | Type | Superpower |
 |---|-------|------|------|------------|
@@ -41,8 +41,11 @@ When the transcription agent processes a meeting and discovers a new project, th
 | 5 | **Connector** | Knowledge Graph | In-Context | Discovers hidden links between your notes, even ones you'd never think of |
 | 6 | **Librarian** | Vault Maintenance | In-Context | Weekly health checks, deduplication, broken link repair, growth analytics |
 | 7 | **Transcriber** | Audio & Meetings | In-Context | Turns recordings and transcripts into rich, structured meeting notes |
+| 8 | **Reader** | Web Ingestion | Subagent | Captures external URLs, removes ads, and synthesizes the core thesis into your vault |
+| 9 | **Synthesizer** | Delegation & Planning | Subagent | Transforms your raw notes into actionable project plans and structured delegation maps |
+| 10 | **Archaeologist** | Deep-Dive Research | Subagent | Runs multi-mode surface scans and deep data mining across external urls and files |
 
-**Architecture**: 3 subagents (Architect, Scribe, Seeker) run as isolated subagent processes via OpenCode's Task tool. 4 in-context agents (Sorter, Connector, Librarian, Transcriber) handle simpler tasks directly in AGENTS.md.
+**Architecture**: 6 subagents (Architect, Scribe, Seeker, Reader, Synthesizer, Archaeologist) run as isolated subagent processes via OpenCode's Task tool. 4 in-context agents (Sorter, Connector, Librarian, Transcriber) handle simpler tasks directly in AGENTS.md.
 
 ---
 
@@ -120,6 +123,9 @@ The **Architect** agent will guide you through onboarding and create your entire
 | *"What did we decide about pricing?"* | **Seeker** searches your vault, synthesizes the answer with citations |
 | *"Weekly review"* | **Librarian** audits broken links, duplicates, health score |
 | *"Find connections for my latest note"* | **Connector** discovers hidden links in your vault |
+| *"Read this article https://..."* | **Reader** ingests it and creates a summary note |
+| *"Draft a proposal from my notes on Project X"* | **Synthesizer** generates a complete document in Drafts |
+| *"Deep mine this list of URLs"* | **Archaeologist** runs a comprehensive scan into the Scratchpad |
 
 ### 6. Evening Shutdown Macro
 
@@ -130,6 +136,15 @@ alias brainsleep="opencode --prompt 'Execute ON_CLOSE.md...'"
 ```
 
 Running `brainsleep` will automatically empty your inbox, perform a health check, and ask for a daily reflection to park thoughts for tomorrow.
+
+### 7. Time-Keeping (Chronos)
+
+Use explicit command-bussed context switching to track what you're working on.
+Type `@now --switch -to "Research X"` to start a task. The system logs it into a ledger, which can be summarized later for productivity metrics via `scripts/chronos-reporter.py`.
+
+### 8. The Foreman & HUD
+
+Every morning, the boot sequence triggers the **Foreman** sweep, which extracts open checkboxes and urgent tasks across your vault, prioritizing them directly into your **Dashboard HUD** (`Meta/Dashboard.md`).
 
 ---
 

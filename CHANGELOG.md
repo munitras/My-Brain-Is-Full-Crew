@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Updated `README.md` and `AGENTS.md` to include documentation for the new Stream 2 capabilities (Reader, Synthesizer, Archaeologist, Foreman, and Chronos) expanding the Crew to 10 agents.
+- Created standalone user guides for `reader`, `synthesizer`, and `archaeologist` under `docs/agents/`.
 - Created `.opencode/agents/archaeologist.md` configuring the Archaeologist subagent with Local, Augmented, and Deep-Web mining scopes (ARC-1105).
 - Instructed Archaeologist to prioritize a "Surface Scan" before deep mining (ARC-1107).
 - Created `scripts/ralph.sh` utility to orchestrate multi-mode mining operations saving raw outputs directly to `Meta/Scratchpad/` (ARC-1101).
