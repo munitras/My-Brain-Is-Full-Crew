@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-25
 ### Added
+- Created `scripts/foreman-sweep.sh` to extract open markdown tasks from the vault (WRK-601).
+- Added test cases in `scripts.bats` to verify `foreman-sweep.sh` correctly parses and formats open tasks.
 - Implemented Lock-Free CQRS Message Bus (Epic 5) with distributed agent outboxes in `Meta/queues/`.
 - Modified `poll-queue.sh` to act as a CQRS Projection Engine, dynamically resolving pending tasks without locks.
 - Updated `Meta/schemas/message-schema.json` to enforce `message_id` on requests and `resolves_id` on Resolution Events.

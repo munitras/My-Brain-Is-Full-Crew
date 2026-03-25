@@ -111,6 +111,22 @@ teardown() {
     assert_output --partial "Path OK"
 }
 
+@test "foreman-sweep.sh extracts open tasks correctly" {
+    cd "$MOCK_REPO"
+    cp "$PROJECT_ROOT/scripts/foreman-sweep.sh" "scripts/"
+    
+    mkdir -p 00-Inbox 01-Projects/Alpha
+    echo "- [ ] Inbox task" > 00-Inbox/note.md
+    echo "  - [ ] Project task" > 01-Projects/Alpha/plan.md
+    echo "- [x] Done task" >> 01-Projects/Alpha/plan.md
+    
+    run bash scripts/foreman-sweep.sh "$MOCK_REPO"
+    assert_success
+    assert_line --partial "- [ ] Inbox task [[00-Inbox/note]]"
+    assert_line --partial "- [ ] Project task [[01-Projects/Alpha/plan]]"
+    refute_output --partial "Done task"
+}
+
 @test "poll-queue.sh filters pending messages for specific agent" {
     mkdir -p "$TEST_DIR/Meta/queues"
     QUEUE_DIR="$TEST_DIR/Meta/queues"
