@@ -173,4 +173,19 @@ teardown() {
     # Check that 50 notes were created in 00-Inbox
     run bash -c "ls -1 tests/fixtures/golden-vault/00-Inbox/*.md | wc -l"
     assert_output "50"
+    
+    # Check that answer-key.json was created
+    assert [ -f "tests/fixtures/golden-vault/answer-key.json" ]
+}
+
+@test "benchmark-sorter.py calculates accuracy correctly" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/benchmark-sorter.py" .
+    
+    echo '{"note1.md": "01-Projects/Alpha", "note2.md": "00-Inbox"}' > answer-key.json
+    echo '{"note1.md": "01-Projects/Alpha", "note2.md": "01-Projects/Beta"}' > predictions.json
+    
+    run python3 benchmark-sorter.py answer-key.json predictions.json
+    assert_success
+    assert_output --partial "Baseline Accuracy     : 50.00% (1/2)"
 }

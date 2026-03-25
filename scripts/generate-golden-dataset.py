@@ -38,6 +38,7 @@ def setup_vault():
 
 def generate_notes():
     note_id = 1
+    answer_key = {}
     
     # Generate CLEAR notes
     for i in range(CATEGORIES["clear"]):
@@ -57,6 +58,7 @@ This note clearly belongs in 01-Projects/Alpha because it mentions Alpha and has
 """
         with open(os.path.join(INBOX_DIR, title), "w") as f:
             f.write(content)
+        answer_key[title] = "01-Projects/Alpha"
         note_id += 1
 
     # Generate AMBIGUOUS notes
@@ -77,6 +79,7 @@ This note could go to 01-Projects/Alpha or 02-Areas/Finance or 06-Meetings.
 """
         with open(os.path.join(INBOX_DIR, title), "w") as f:
             f.write(content)
+        answer_key[title] = "06-Meetings/2026/03"
         note_id += 1
 
     # Generate NOISE notes
@@ -97,7 +100,11 @@ Random grocery list. Needs a new folder or stays in inbox.
 """
         with open(os.path.join(INBOX_DIR, title), "w") as f:
             f.write(content)
+        answer_key[title] = "00-Inbox"
         note_id += 1
+
+    with open(os.path.join(VAULT_DIR, "answer-key.json"), "w") as f:
+        json.dump(answer_key, f, indent=2)
 
 if __name__ == "__main__":
     setup_vault()
