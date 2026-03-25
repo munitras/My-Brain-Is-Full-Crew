@@ -110,3 +110,39 @@ teardown() {
     assert_success
     assert_output --partial "Path OK"
 }
+
+@test "poll-queue.sh filters pending messages for specific agent" {
+    mkdir -p "$TEST_DIR/Meta"
+    QUEUE_FILE="$TEST_DIR/Meta/agent-messages.jsonl"
+    echo '{"timestamp": "2026-03-25T08:00:00Z", "from": "system", "to": "architect", "status": "resolved", "intent": "initialize_bus", "payload": {"status": "online"}}' > "$QUEUE_FILE"
+    echo '{"timestamp": "2026-03-25T08:05:00Z", "from": "architect", "to": "sorter", "status": "pending", "intent": "file_note", "payload": {"note": "test.md"}}' >> "$QUEUE_FILE"
+    echo '{"timestamp": "2026-03-25T08:10:00Z", "from": "architect", "to": "sorter", "status": "resolved", "intent": "file_note", "payload": {"note": "test2.md"}}' >> "$QUEUE_FILE"
+
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/poll-queue.sh" "poll-queue.sh"
+    chmod +x poll-queue.sh
+
+    run ./poll-queue.sh "sorter"
+    assert_success
+    assert_output '{"timestamp":"2026-03-25T08:05:00Z","from":"architect","to":"sorter","status":"pending","intent":"file_note","payload":{"note":"test.md"}}'
+}
+
+@test "poll-queue.sh fails gracefully when queue file is missing" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/poll-queue.sh" "poll-queue.sh"
+    chmod +x poll-queue.sh
+
+    run ./poll-queue.sh "sorter"
+    assert_failure
+    assert_output --partial "Queue file not found"
+}
+
+@test "poll-queue.sh requires agent name parameter" {
+    cd "$TEST_DIR"
+    cp "$PROJECT_ROOT/scripts/poll-queue.sh" "poll-queue.sh"
+    chmod +x poll-queue.sh
+
+    run ./poll-queue.sh
+    assert_failure
+    assert_output '{"error": "Agent name parameter is required."}'
+}

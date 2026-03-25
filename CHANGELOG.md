@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased] — 2026-03-25
 
 ### Added
+- Built Dataview Observability Dashboard at `Meta/Dashboard.md` (SYS-105).
+- Added unit tests for `poll-queue.sh` in `tests/scripts.bats`.
 - JSONL Schema for Message Queue (`Meta/schemas/message-schema.json`).
 - `poll-queue.sh` Wrapper Script for efficient queue filtering.
 - `.opencode/ON_START.md` file deployment support during installation and updates.
@@ -14,6 +16,9 @@ All notable changes to this project will be documented in this file.
 - Vault structure recreation added to `scripts/update-opencode.sh` to handle accidentally missing directories.
 
 ### Changed
+- Updated `AGENTS.md` pre-task checklists for Sorter, Connector, Librarian, and Transcriber to invoke the `check_messages` tool and read from JSONL instead of markdown (SYS-103).
+- Updated `AGENTS.md` and `CONTRIBUTING.md` Inter-Agent Messaging sections to specify strict JSON schema usage (SYS-104).
+- Updated `scripts/install-opencode.sh` to initialize `.jsonl` message bus instead of `.md` format.
 - Fixed ShellCheck warnings (SC2034, SC2317, SC2001) across `scripts/*.sh` to improve bash compliance.
 - Switched `echo -e` formats to cleaner `printf` or single-parameter `echo -e` implementations where necessary.
 - Simplified bash logic (e.g. replacing `cat file | tr` with `tr < file`).

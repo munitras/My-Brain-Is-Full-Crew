@@ -163,15 +163,9 @@ info "Creating initial Meta files..."
 # Store install location for update script
 echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
 
-if [[ ! -f "$VAULT_DIR/Meta/agent-messages.md" ]]; then
-  cat > "$VAULT_DIR/Meta/agent-messages.md" << 'EOF'
-# Agent Message Board
-
-Messages are listed newest-first. Resolved messages are marked ✅ and kept for 7 days, then archived by the Librarian.
-
-_(No messages yet)_
-EOF
-  success "Created Meta/agent-messages.md"
+if [[ ! -f "$VAULT_DIR/Meta/agent-messages.jsonl" ]]; then
+  echo '{"timestamp": "2026-03-25T08:00:00Z", "from": "system", "to": "architect", "status": "resolved", "intent": "initialize_bus", "payload": {"status": "online"}, "resolution": "JSONL bus initialized successfully."}' > "$VAULT_DIR/Meta/agent-messages.jsonl"
+  success "Created Meta/agent-messages.jsonl"
 fi
 
 if [[ ! -f "$VAULT_DIR/Meta/agent-log.md" ]]; then

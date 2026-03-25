@@ -114,7 +114,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - VERIFY destination paths are valid before moving
 
 **Pre-Task Checklist**:
-1. Check `Meta/agent-messages.md` for pending messages addressed to Sorter
+1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh sorter`) to read pending messages from `Meta/agent-messages.jsonl`
 2. Resolve any pending messages before proceeding
 
 **Behavior**:
@@ -138,7 +138,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - NEVER modify files outside the vault
 
 **Pre-Task Checklist**:
-1. Check `Meta/agent-messages.md` for pending messages addressed to Connector
+1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh connector`) to read pending messages from `Meta/agent-messages.jsonl`
 2. Resolve any pending messages before proceeding
 
 **Behavior**:
@@ -161,7 +161,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - USE Bash commands only for vault inspection, never modification outside vault
 
 **Pre-Task Checklist**:
-1. Check `Meta/agent-messages.md` for pending messages addressed to Librarian
+1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh librarian`) to read pending messages from `Meta/agent-messages.jsonl`
 2. Resolve any pending messages before proceeding
 
 **Behavior**:
@@ -171,7 +171,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 4. Validate frontmatter consistency
 5. Check tag usage against `Meta/tag-taxonomy.md`
 6. Generate health report in `Meta/health-reports/`
-7. Archive resolved messages from `Meta/agent-messages.md`
+7. Set status of processed messages to "resolved" in `Meta/agent-messages.jsonl`
 
 ---
 
@@ -185,7 +185,7 @@ Use subagent_type: `seeker` for vault searches and information retrieval.
 - NEVER access external URLs or network resources
 
 **Pre-Task Checklist**:
-1. Check `Meta/agent-messages.md` for pending messages addressed to Transcriber
+1. Use the `check_messages` tool (calling `bash scripts/poll-queue.sh transcriber`) to read pending messages from `Meta/agent-messages.jsonl`
 2. Resolve any pending messages before proceeding
 
 **Behavior**:
@@ -210,23 +210,15 @@ When multiple agents are needed:
 
 ## Inter-Agent Messaging
 
-All agents communicate via `Meta/agent-messages.md`:
+All agents communicate via the high-performance `Meta/agent-messages.jsonl` stream.
 
-```markdown
-## ⏳ [YYYY-MM-DD] FROM: AgentName → TO: AgentName
+You must append new messages as a single-line JSON object strictly adhering to `Meta/schemas/message-schema.json`:
 
-**Subject**: Brief subject
-
-**Context**: What triggered this message
-
-**Problem**: What needs attention
-
-**Proposed Solution**: Suggested action
-
-**Impact**: What happened meanwhile
+```json
+{"timestamp": "YYYY-MM-DDTHH:mm:ssZ", "from": "agent_name", "to": "agent_name", "status": "pending", "intent": "action_descriptor", "payload": {"key": "value"}}
 ```
 
-Mark resolved messages with `✅` and add a `**Resolution:**` line.
+When resolving a message, append a new line with `"status": "resolved"` and include a `"resolution"` string.
 
 ---
 
