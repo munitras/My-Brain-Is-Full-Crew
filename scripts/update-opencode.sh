@@ -227,6 +227,43 @@ for config in "vault-structure.json" "tag-taxonomy.json"; do
   fi
 done
 
+# ── Install CLI Aliases ──────────────────────────────────────────────────────
+echo ""
+echo -e "${BOLD}Do you want to add/update CLI aliases in your shell (.zshrc / .bashrc)?${NC}"
+echo -e "   This adds commands like 'now' and 'ralph' to your terminal."
+echo -e "   ${BOLD}y)${NC} Yes, add/update aliases"
+echo -e "   ${BOLD}n)${NC} No, skip"
+read -r -p "   > " ALIAS_CONFIRM
+
+if [[ "$ALIAS_CONFIRM" =~ ^[Yy]$ ]]; then
+  SHELL_RC=""
+  if [[ "$SHELL" == */zsh ]]; then
+    SHELL_RC="$HOME/.zshrc"
+  elif [[ "$SHELL" == */bash ]]; then
+    SHELL_RC="$HOME/.bashrc"
+  fi
+
+  if [[ -n "$SHELL_RC" ]]; then
+    # Check if already installed
+    if ! grep -q "My Brain Is Full Crew - CLI Aliases" "$SHELL_RC" 2>/dev/null; then
+      echo "" >> "$SHELL_RC"
+      echo "# My Brain Is Full Crew - CLI Aliases" >> "$SHELL_RC"
+      echo "alias now=\"bash '$VAULT_DIR/scripts/context-switch.sh'\"" >> "$SHELL_RC"
+      echo "alias ralph=\"bash '$VAULT_DIR/scripts/ralph.sh'\"" >> "$SHELL_RC"
+      success "Added aliases to $SHELL_RC (run 'source $SHELL_RC' or restart your terminal)"
+    else
+      # If they are present but we might want to update the paths, we update them using sed
+      sed -i.bak -e "s|alias now=.*|alias now=\"bash '$VAULT_DIR/scripts/context-switch.sh'\"|" "$SHELL_RC"
+      sed -i.bak -e "s|alias ralph=.*|alias ralph=\"bash '$VAULT_DIR/scripts/ralph.sh'\"|" "$SHELL_RC"
+      success "Updated aliases in $SHELL_RC"
+    fi
+  else
+    warn "Could not determine shell. Add aliases manually:"
+    echo "   alias now=\"bash '$VAULT_DIR/scripts/context-switch.sh'\""
+    echo "   alias ralph=\"bash '$VAULT_DIR/scripts/ralph.sh'\""
+  fi
+fi
+
 # ── Summary ─────────────────────────────────────────────────────────────────
 echo ""
 if [[ $AGENT_COUNT -eq 0 && $REF_COUNT -eq 0 && -z "$AGENTS_MD_UPDATED" && -z "$ON_START_UPDATED" && -z "$ON_CLOSE_UPDATED" && -z "$SCRIPTS_UPDATED" && -z "$META_CONFIG_UPDATED" ]]; then

@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased] — 2026-03-26
 ### Added
+- Added interactive prompt in `install-opencode.sh` and `update-opencode.sh` to allow users to automatically append or update CLI aliases (`now` and `ralph`) in their `.zshrc` or `.bashrc`.
 - Added comprehensive `docs/USER_GUIDE.md` detailing installation, usage scenarios, role-based workflows, and agent overviews.
 ### Removed
 - Removed `tasks-bugs.md` (cleaned up working storage).
