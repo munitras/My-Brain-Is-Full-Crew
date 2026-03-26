@@ -148,6 +148,22 @@ Every morning, the boot sequence triggers the **Foreman** sweep, which extracts 
 
 ---
 
+## CLI Commands & User Guide
+
+The system includes a suite of CLI commands powered by a `Makefile` to manage your installation, upgrades, and testing.
+
+```bash
+make install      # Run the interactive installer into an Obsidian vault
+make update       # Update an existing installation in your vault
+make verify       # Verify project file integrity
+make manifest     # Regenerate the agent manifest (after code changes)
+make test         # Run all integrity and script tests
+```
+
+For complete documentation on scenarios, workflows, and deeper CLI usage, please see the [User Guide](docs/USER_GUIDE.md).
+
+---
+
 ## Vault structure
 
 ```
@@ -185,7 +201,7 @@ Agents use `scripts/validate-paths.sh` for runtime path validation before perfor
 After cloning and after updates, verify file integrity:
 
 ```bash
-bash scripts/verify-integrity.sh
+make verify
 ```
 
 This checks SHA256 hashes of all agent files against the manifest. If verification fails, **do not proceed** — this may indicate tampering.
@@ -273,6 +289,9 @@ Each agent has specific tool permissions:
 | Connector | ✓ | ✓ | ✓ | ✗ | ✗ |
 | Librarian | ✓ | ✓ | ✓ | ask | ✗ |
 | Transcriber | ✓ | ✓ | ✓ | ✗ | ✗ |
+| Reader | ✓ | ✓ | ✗ | ✗ | ✓ |
+| Synthesizer | ✓ | ✓ | ✗ | ✗ | ✗ |
+| Archaeologist | ✓ | ✓ | ✗ | ✓ | ✓ |
 
 ---
 
@@ -289,9 +308,12 @@ Each agent has specific tool permissions:
 | `scripts/verify-integrity.sh` | Verify file hashes |
 | `scripts/generate-manifest.sh` | Regenerate integrity manifest |
 | `scripts/generate-context.sh` | Generate dated project-context.txt |
- | `scripts/validate-paths.sh` | Runtime path boundary validator |
- | `SECURITY.md` | Security policy and practices |
- | `tests/scripts.bats` | Shell script test suite |
+| `scripts/validate-paths.sh` | Runtime path boundary validator |
+| `scripts/foreman-sweep.sh` | HUD dashboard task aggregation |
+| `scripts/chronos-reporter.py` | Time-keeping and metric logging |
+| `scripts/ralph.sh` | Multi-mode research scanning utility |
+| `SECURITY.md` | Security policy and practices |
+| `tests/scripts.bats` | Shell script test suite |
 
 ---
 
@@ -316,8 +338,8 @@ Alternatively, run the scripts manually:
 ```bash
 cd /path/to/your-vault/My-Brain-Is-Full-Crew
 git pull
-bash scripts/verify-integrity.sh
-bash scripts/update-opencode.sh
+make verify
+make update
 ```
 
 Only changed files are updated. Your vault notes are never touched.
@@ -343,7 +365,7 @@ Areas where help is especially welcome:
 |----------------|------------------|
 | `CLAUDE.md` dispatcher | `AGENTS.md` dispatcher |
 | `.claude/agents/` with YAML frontmatter | `.opencode/agents/` with OpenCode frontmatter |
-| 8 agents (including Postman) | 7 agents (Postman removed) |
+| 8 agents (including Postman) | 10 agents (Postman removed, Stream 2 added) |
 | MCP for Gmail/Calendar | No external integrations |
 | Subagent `Agent` tool | Subagent `Task` tool |
 | `.claude/skills/` | In-context agent definitions |

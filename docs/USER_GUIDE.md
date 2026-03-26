@@ -21,6 +21,27 @@ Talk naturally to your AI agents to manage your vault.
    Ask the **Architect** agent to set up the default structure:
    "initialize vault"
 
+## COMMAND LINE INTERFACE
+
+The project provides several CLI commands via a `Makefile` and standard bash scripts to manage your installation and agents.
+
+### Core Commands
+- `make install` : Install MBIFC into your Obsidian vault. This runs an interactive installer.
+- `make update` : Update an existing MBIFC installation.
+- `make verify` : Verify project file integrity against the manifest (`Meta/agent-manifest.json`).
+- `make vault-status` : Show the currently configured vault path.
+
+### Development & Maintenance
+- `make manifest` : Regenerate `Meta/agent-manifest.json` after editing agent instructions.
+- `make test` : Run all integration tests (requires `bats`).
+- `make context` : Generate a context snapshot of the project for debugging or AI review.
+- `make clean` : Remove temporary files, logs, and caches.
+
+### OpenCode CLI Usage
+To interact with the agents, you run OpenCode inside your vault:
+- `opencode` : Launch the interactive chat session.
+- `opencode --prompt 'Execute ON_CLOSE.md...'` : Run a specific automation non-interactively (e.g., your Evening Shutdown Macro).
+
 ## USAGE SCENARIOS
 
 ### 1. Note Capture & Routing
