@@ -98,26 +98,32 @@ echo -e "${BOLD}╔════════════════════�
 echo -e "${BOLD}║  My Brain Is Full — OpenCode Update       ║${NC}"
 echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
 echo ""
+
+# ── Confirm vault location ─────────────────────────────────────────────────
+echo -e "${BOLD}Is this your Obsidian vault folder?${NC}"
+echo -e "   ${DIM}${VAULT_DIR}${NC}"
+echo ""
+echo -e "   ${BOLD}y)${NC} Yes, update here"
+echo -e "   ${BOLD}n)${NC} No, let me type the correct path"
+read -r -p "   > " CONFIRM
+
+if [[ "$CONFIRM" =~ ^[Nn]$ ]]; then
+  echo ""
+  echo -e "${BOLD}Enter the full path to your Obsidian vault:${NC}"
+  read -r -p "   > " INPUT_VAULT
+  INPUT_VAULT="${INPUT_VAULT/#\~/$HOME}"
+  VAULT_DIR="$INPUT_VAULT"
+  # Save for future updates
+  echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
+fi
+
+echo ""
 info "Target Vault: ${BOLD}${VAULT_DIR}${NC}"
 echo ""
 
 # ── Check vault has been set up ─────────────────────────────────────────────
 if [[ ! -d "$VAULT_DIR/.opencode/agents" ]]; then
-  echo ""
-  echo -e "   ${YELLOW}Can't find installed agents in:${NC}"
-  echo -e "   ${DIM}$VAULT_DIR${NC}"
-  echo ""
-  echo -e "   ${BOLD}Enter the path to your Obsidian vault:${NC}"
-  read -r -p "   > " INPUT_VAULT
-  INPUT_VAULT="${INPUT_VAULT/#\~/$HOME}"
-  if [[ -d "$INPUT_VAULT/.opencode/agents" ]]; then
-    VAULT_DIR="$INPUT_VAULT"
-    # Save for future updates
-    echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
-    success "Vault path updated"
-  else
-    die "No .opencode/agents/ found in $INPUT_VAULT — run install-opencode.sh first"
-  fi
+  die "No .opencode/agents/ found in $VAULT_DIR — run install-opencode.sh first"
 fi
 
 # ── Update agents ───────────────────────────────────────────────────────────
