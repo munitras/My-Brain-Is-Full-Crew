@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [Unreleased] — 2026-03-25
+## [Unreleased] — 2026-03-26
+### Added
+- Added comprehensive `docs/USER_GUIDE.md` detailing installation, usage scenarios, role-based workflows, and agent overviews.
+### Removed
+- Removed `tasks-bugs.md` (cleaned up working storage).
+
 ### Added
 - Updated `README.md` and `AGENTS.md` to include documentation for the new Stream 2 capabilities (Reader, Synthesizer, Archaeologist, Foreman, and Chronos) expanding the Crew to 10 agents.
 - Created standalone user guides for `reader`, `synthesizer`, and `archaeologist` under `docs/agents/`.
