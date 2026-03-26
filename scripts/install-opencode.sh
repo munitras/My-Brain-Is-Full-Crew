@@ -136,7 +136,8 @@ echo ""
 info "Copying AGENTS.md..."
 cp "$REPO_DIR/AGENTS.md" "$VAULT_DIR/"
 [[ -f "$REPO_DIR/.opencode/ON_START.md" ]] && cp "$REPO_DIR/.opencode/ON_START.md" "$VAULT_DIR/.opencode/"
-success "Copied AGENTS.md and ON_START.md"
+[[ -f "$REPO_DIR/.opencode/ON_CLOSE.md" ]] && cp "$REPO_DIR/.opencode/ON_CLOSE.md" "$VAULT_DIR/.opencode/"
+success "Copied AGENTS.md, ON_START.md, and ON_CLOSE.md"
 
 # ── Copy references ────────────────────────────────────────────────────────
 echo ""
@@ -149,7 +150,7 @@ success "Copied references"
 echo ""
 info "Copying scripts..."
 mkdir -p "$VAULT_DIR/scripts"
-for script in "$REPO_DIR/scripts/"*.sh; do
+for script in "$REPO_DIR/scripts/"*; do
   if [[ -f "$script" ]]; then
     cp "$script" "$VAULT_DIR/scripts/"
   fi

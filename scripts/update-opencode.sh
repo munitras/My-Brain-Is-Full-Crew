@@ -168,7 +168,7 @@ if [[ -f "$REPO_DIR/AGENTS.md" ]]; then
   fi
 fi
 
-# ── Update ON_START.md ────────────────────────────────────────────────────────
+# ── Update ON_START.md & ON_CLOSE.md ──────────────────────────────────────────
 ON_START_UPDATED=""
 if [[ -f "$REPO_DIR/.opencode/ON_START.md" ]]; then
   if [[ ! -f "$VAULT_DIR/.opencode/ON_START.md" ]] || ! diff -q "$REPO_DIR/.opencode/ON_START.md" "$VAULT_DIR/.opencode/ON_START.md" >/dev/null 2>&1; then
@@ -178,10 +178,19 @@ if [[ -f "$REPO_DIR/.opencode/ON_START.md" ]]; then
   fi
 fi
 
+ON_CLOSE_UPDATED=""
+if [[ -f "$REPO_DIR/.opencode/ON_CLOSE.md" ]]; then
+  if [[ ! -f "$VAULT_DIR/.opencode/ON_CLOSE.md" ]] || ! diff -q "$REPO_DIR/.opencode/ON_CLOSE.md" "$VAULT_DIR/.opencode/ON_CLOSE.md" >/dev/null 2>&1; then
+    cp "$REPO_DIR/.opencode/ON_CLOSE.md" "$VAULT_DIR/.opencode/"
+    info "Updated ON_CLOSE.md"
+    ON_CLOSE_UPDATED="1"
+  fi
+fi
+
 # ── Update scripts ────────────────────────────────────────────────────────────
 SCRIPTS_UPDATED=""
 mkdir -p "$VAULT_DIR/scripts"
-for script in "$REPO_DIR/scripts/"*.sh; do
+for script in "$REPO_DIR/scripts/"*; do
   if [[ -f "$script" ]]; then
     name="$(basename "$script")"
     if [[ ! -f "$VAULT_DIR/scripts/$name" ]] || ! diff -q "$script" "$VAULT_DIR/scripts/$name" >/dev/null 2>&1; then
@@ -206,7 +215,7 @@ done
 
 # ── Summary ─────────────────────────────────────────────────────────────────
 echo ""
-if [[ $AGENT_COUNT -eq 0 && $REF_COUNT -eq 0 && -z "$AGENTS_MD_UPDATED" && -z "$ON_START_UPDATED" && -z "$SCRIPTS_UPDATED" && -z "$META_CONFIG_UPDATED" ]]; then
+if [[ $AGENT_COUNT -eq 0 && $REF_COUNT -eq 0 && -z "$AGENTS_MD_UPDATED" && -z "$ON_START_UPDATED" && -z "$ON_CLOSE_UPDATED" && -z "$SCRIPTS_UPDATED" && -z "$META_CONFIG_UPDATED" ]]; then
   success "Everything is already up to date!"
 else
   success "Updated $AGENT_COUNT agent(s), $REF_COUNT reference(s)"
