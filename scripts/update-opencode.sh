@@ -115,6 +115,12 @@ if [[ "$CONFIRM" =~ ^[Nn]$ ]]; then
   VAULT_DIR="$INPUT_VAULT"
   # Save for future updates
   echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
+elif [[ -n "$CONFIRM" && ! "$CONFIRM" =~ ^[Yy]$ ]]; then
+  # User typed a path directly instead of y/n
+  INPUT_VAULT="${CONFIRM/#\~/$HOME}"
+  VAULT_DIR="$INPUT_VAULT"
+  # Save for future updates
+  echo "$VAULT_DIR" > "$REPO_DIR/.mbifc-vault-path"
 fi
 
 echo ""

@@ -104,6 +104,10 @@ if [[ "$CONFIRM" =~ ^[Nn]$ ]]; then
   read -r -p "   > " VAULT_DIR
   VAULT_DIR="${VAULT_DIR/#\~/$HOME}"
   [[ -d "$VAULT_DIR" ]] || die "Directory not found: $VAULT_DIR"
+elif [[ -n "$CONFIRM" && ! "$CONFIRM" =~ ^[Yy]$ ]]; then
+  # User typed a path directly instead of y/n
+  VAULT_DIR="${CONFIRM/#\~/$HOME}"
+  [[ -d "$VAULT_DIR" ]] || die "Directory not found: $VAULT_DIR"
 fi
 
 # ── Create vault directories ──────────────────────────────────────────────
